@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Centre médical - Gestion des dossiers patients</title>
+</head>
+<header>
+      <div class="col-md-6">
+          <a href="/" class="btn btn-primary">Accueil</a>
+      </div>
+</header>
+<body>
+    <h1>Centre médical - Gestion des dossiers patients</h1>
+    <!-- Formulaire pour ajouter un patient -->
+    <h2>Ajouter un patient</h2>
+    <form id="add-patient-form" method="GET">
+        <label for="id">Identifiant :</label>
+        <input type="text" id="id" name="id" value="{{ next_patient_id }}" readonly><br><br>
+        <label for="nom">Nom :</label>
+        <input type="text" id="nom" name="nom"><br><br>
+        <label for="prenom">Prénom :</label>
+        <input type="text" id="prenom" name="prenom"><br><br>
+        <label for="genre">Genre :</label>
+        <select id="genre" name="genre">
+            <option value="M">Homme</option>
+            <option value="F">Femme</option>
+        </select><br><br>
+        <label for="date_naissance">Date de naissance :</label>
+        <input type="date" id="date_naissance" name="date_naissance"><br><br>
+        <label for="medecin">Médecin :</label>
+        <input type="text" id="medecin" name="medecin"><br><br>
+        <button type="submit">Ajouter</button>
+    </form>
+</body>
+</html>
