@@ -1,0 +1,73 @@
+<header>
+      <div class="col-md-6">
+          <a href="/fhir" class="btn btn-primary">Accueil</a>
+      </div>
+</header>
+{% extends 'layout/base.html' %}
+
+{% block title %} Liste des patients {% endblock %}
+
+{% block content %}
+<h1 class="subject mt-5 mb-5">Liste des patients</h1>
+
+{% if patients %}
+
+
+<div class="row justify-content-center">
+  <div class="col-md-10 col-xs-12 mb-5">
+    <table class="table table-hover table-bordered">
+      <tr class="bg-light">
+        <th class="text-center">Id du patient</th>
+        <th class="text-center">Nom et Prénom</th>
+        <th class="text-center">Date de naissance</th>
+        <!-- <th class="text-center">Date et heure d'arrivée</th> -->
+        <!-- <th class="text-center">Ordre de gravite</th> -->
+        <!-- <th class="text-center">Date et heure de départ</th> -->
+        <!-- <th class="text-center">Service</th> -->
+        <!-- <th class="text-center">Statut</th> -->
+      </tr>
+      {% for p in patients %}
+      <tr>
+        <td class="text-center">
+          <a class="mt-2 text-decoration-none text-dark" href="{{ url_for('patient_detail', patient_id=p.identifier) }}">{{ p.identifier }}</a></td>
+        </td>
+        <td class="text-center">
+        <a class="mt-2 text-decoration-none text-dark" href="{{ url_for('patient_detail', patient_id=p.identifier) }}">{{ p.name }}</a></td>
+        <td class="text-center" class="my-date">
+          <a class="mt-2 text-decoration-none text-dark" href="{{ url_for('patient_detail', patient_id=p.identifier) }}">{{ p.birthDate }}</a></td>
+        </td>
+        <!-- <td class="text-center" class="my-date">{{ p.date_et_heure_arrivee_patient }}</td>
+        <td class="text-center">{{ p.ordre_de_gravite_patient }}</td>
+        <td class="text-center">{{ p.date_et_heure_depart_patient }}</td> -->
+        <!-- {% if p.service_id == 1 %}
+        <td class="text-center">Urgences</td>
+        {% endif %}
+        {% if p.status_id == 1 %}
+        <td class="text-center">En attente</td>
+        {% endif %}
+        {% if p.status_id == 2 %}
+        <td class="text-center">Admis</td>
+        {% endif %}
+        {% if p.status_id == 3 %}
+        <td class="text-center">Sortis</td>
+        {% endif %} -->
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+
+{% else %}
+<p class="text-center"><i>Aucun résultats retourné!!!</i></p>
+{% endif %}
+
+  <script>
+   window.onload = function() {
+     let d = document.getElementsByClassName('my-date')
+     for (let i = 0; i < d.length; i++)
+         d[i].innerText = moment(d[i].innerText).locale('fr').fromNow()
+   }
+
+</script>
+
+{% endblock %}
+

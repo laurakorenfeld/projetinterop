@@ -1,54 +1,121 @@
 import curses
+import urllib
+
 from app import app
+from datetime import datetime
 from flask import Flask, render_template, request, jsonify, redirect, url_for
 import sqlite3
+from app import utils
+import json, os
+from hl7apy.core import Message
 
+@app.route("/")
+def accueil():
+    return render_template('index.html')
 
-@app.route('/',methods=['GET'])
+@app.route('/metadata', methods=['GET'])
+def metadata():
+    # get the resources supported
+    resources = ["Patient", "Consultation"]
+
+    # get the interactions and operations supported for each resource
+    interactions = {
+        "Patient": ["Create", "Read", "Update"],
+        "Consultation": ["Create", "Read"]
+    }
+
+    # get the search parameters supported for each resource
+    search_params = {
+        "Patient": ["id", "name", "birthdate"],
+        "Consultation": ["id", "patient_id", "date"]
+    }
+
+    # get the security requirements
+    security = "SSL/TLS"
+
+    # create a dictionary with the metadata
+    metadata = {
+        "resources": resources,
+        "interactions": interactions,
+        "search_params": search_params,
+        "security": security
+    }
+
+    # return the metadata as a JSON object
+    return jsonify(metadata)\
+
+@app.route("/fhir/Patient")
+def patient_list():
+    patients = utils.load_patient()
+    return render_template('patient.html', patients=patients)
+
+@app.route("/fhir/Patient/<int:patient_id>")
+def patient_details(patient_id):
+    patient = utils.get_patient_by_id(patient_id)
+    return render_template('patient_detail.html',patient=patient)
+
+@app.route('/fhir',methods=['GET'])
 def aff_acc_med():
     return render_template('acc_medecin.html')
 
-@app.route('/page_ajout_patient',methods=['GET'])
-def page_ajout_patient():
-    ajouter_patient
-    return render_template('ajout_patient.html')
-
-
-@app.route('/ajout_patient',methods=['GET'])
-
-def ajouter_patient():
-    conn = sqlite3.connect('dossiers_medicaux.db')
-    cursor  = conn.cursor()
-    nom = request.form["nom"]
-    prenom = request.form["prenom"]
-    genre = request.form["genre"]
-    date = request.form["date"]
-    medecin = request.form["medecin"]
-    sql = """INSERT INTO patient (nom, prenom, genre)
-                VALUES (?, ?, ?, ?, ?)"""
-    cursor = cursor.execute(sql, (nom, prenom, genre))
-    conn.commit()
-    return f"La personne avec id est {cursor.lastrowid} a été ajoutée", 201
-
-
-
-@app.route('/rech_patient', methods=['GET'])
-def rech_patient():
-    return render_template('affiche_patient.html')
-
-@app.route('/patients', methods=['GET', 'POST'])
-def affiche_patient():
-    conn = sqlite3.connect('dossiers_medicaux.db')
-    cursor  = conn.cursor()
+@app.route('/fhir/page_ajout_patient',methods=['GET','POST'])
+def page_ajout_patient(id):
     if request.method == 'GET':
-        cursor = conn.execute("SELECT * FROM dossiers_medicaux")
-        patient = [
-            dict(id=row[0],nom=row[1],prenom=row[2],genre=row[3],materiel=row[4],recherche=row[5])
-            for row in cursor.fetchall()
-        ]
-        if patient is not None:
-            return jsonify(patient)
+        return render_template('ajout_patient.html')
+    else :
+        nom = request.form["nom"]
+        prenom = request.form["prenom"]
+        genre = request.form["genre"]
+        # Récupération de la date depuis le formulaire
+        date_naiss = request.form["date_naissance"]
 
+        # Conversion de la date en un objet datetime
+        date = datetime.strptime(date_naiss, '%Y-%m-%d')
+
+        # Formatage de la date dans le format JJ/MM/AAAA
+        date_str = date.strftime('%d/%m/%Y')
+        patients = utils.read_json(os.path.join(app.root_path, 'data/Patients/Patient'+ id + '.json'))
+
+        new_patient = {
+            "resourceType": "Patient",
+            "identifier": len(patients) + 1,
+            "active": True,
+            "name": f"{prenom} {nom}",
+            "telecom": "...",
+            "gender": genre,
+            "birthDate": date_str,
+        }
+
+        patients.append(new_patient)
+
+        with open(os.path.join(app.root_path, 'data/Patients/patient'+ id + '.json'), 'w') as f:
+            json.dump(patients, f)
+
+        return redirect(url_for('patient_list'))
+
+
+@app.route('/fhir/rech_patient', methods=['GET','POST'])
+def rech_patients():
+    if request.method == 'GET':
+        return render_template('affiche_patient.html')
+    else:
+        patient_id = request.form['patient_id']
+        if patient_id:
+            # Redirige l'utilisateur vers la page 'patient_detail.html' avec l'identifiant du patient en paramètre
+            return redirect('/fhir/patient_detail/' + str(patient_id))
+        else:
+            return 'Patient non trouvé'
+
+@app.route('/fhir/patient_detail/<int:patient_id>')
+def patient_detail(patient_id):
+    print(patient_id)
+    patients = utils.load_patient()
+    patient = utils.get_patient_by_id(patient_id)
+    print(patient)
+    if patient:
+        return render_template('patient_detail.html', patient=patient)
+    else:
+        return 'Patient non trouvé'
 
 @app.route('/patients/<int:id>', methods=['GET','PUT', 'DELETE'])
 def personne(id):
@@ -94,6 +161,39 @@ def personne(id):
         conn.commit()
         return "La personne avec id est {} a été effacée".format(id), 201
 
+@app.route("/patientjson/<id>")
+def userdata(id):
+  document_path = os.getcwd() + '/app/data/Patients/Patient' + id + '.json'
+  f = open(document_path, 'r')
+  data = json.load(f)
+  f.close()
+  return data
+
+def immunizationdata(id):
+  document_path = os.getcwd() + '/app/static/data/immunization/' + id + '.json'
+  f = open(document_path, 'r')
+  data = json.load(f)
+  f.close()
+  return data
+
+
+@app.route("/patient/<id>")
+def patient(id):
+
+    patient = userdata(id)
+    return render_template('patient_detail.html', patient=patient)
+
+@app.route("/immunization/<id>")
+def immunization(id):
+
+    data = immunizationdata (id)
+    return render_template('immunization.html', utilisateur=data)
+
+@app.route('/serv/<id>')
+def get_patient_from_server(id):
+    url = urllib.request.urlopen('http://172.20.10.2:5000/Patient/'+ id)
+    data = json.load(url)
+    return render_template('patient_detail.html', patient=data)
 
 @app.route('/<name>')
 def nom(name):

@@ -1,0 +1,69 @@
+<header><br>
+      <div class="col-md-6">
+          <a href="/fhir" class="btn btn-primary">Accueil</a>
+      </div>
+</header>
+{% extends 'layout/base.html' %}
+
+{% block title %} Patient {{ patient.name }} {% endblock %}
+
+{% block content %}
+<h1 class="subject mt-5 mb-5">Patient : {{ patient['name'][0]['family'] }} {{ patient['name'][0]['given'][0] }}</h1>
+
+{% if patient %}
+<!-- <form class="row justify-content-center ml-5 mr-5 mb-5">
+  <div class="col-md-3 form-group mr-sm-2">
+    <input type="text" class="form-control" name="keyword" placeholder="Entrez le nom du patient..." />
+  </div>
+  <div class="col-md-3 form-group mr-sm-2">
+    <input type="text" class="form-control" onfocus="(this.type='date')" name="from_date" placeholder="Date de début"/>
+  </div>
+  <div class="col-md-3 form-group mr-sm-2">
+    <input type="text" class="form-control" onfocus="(this.type='date')" name="to_date" placeholder="Date de fin"/>
+  </div>
+    <input type="submit" value="Rechercher" class="my-2 my-sm-0 btn btn-success" size="sm">
+</form> -->
+
+
+<div class="row justify-content-center">
+  <div class="col-md-10 col-xs-12 mb-5">
+    <table class="table table-hover table-bordered">
+      <tr class="bg-light">
+        <th class="text-center">Id du patient</th>
+        <th class="text-center">Nom et Prénom</th>
+        <th class="text-center">Date de naissance</th>
+        <th class="text-center">Contact</th>
+        <th class="text-center">Sexe</th>
+        <!-- <th class="text-center">Date et heure d'arrivée</th> -->
+        <!-- <th class="text-center">Ordre de gravite</th> -->
+        <!-- <th class="text-center">Date et heure de départ</th> -->
+        <!-- <th class="text-center">Service</th> -->
+        <!-- <th class="text-center">Statut</th> -->
+      </tr>
+      <tr>
+        <td class="text-center">{{ patient.id }}</td>
+        <td class="text-center">{{ patient['name'][0]['family'] }} {{ patient['name'][0]['given'][0] }}</td>
+        <td class="text-center" class="my-date">{{ patient.birthDate }}</td>
+        <td class="text-center">{{ patient['telecom'][1]['value'] }}</td>
+        <td class="text-center">{{ patient.gender }}</td>
+      </tr>
+    </table>
+  </div>
+  <div class="row justify-content-center mb-5">
+    <a class="btn btn-primary mt-2" href="{{ url_for('patient_list') }}" role="button">Retourner à la page de la liste des patients</a>
+  </div>
+
+{% else %}
+<p class="text-center"><i>Aucun résultats retourné!!!</i></p>
+{% endif %}
+
+  <script>
+   window.onload = function() {
+     let d = document.getElementsByClassName('my-date')
+     for (let i = 0; i < d.length; i++)
+         d[i].innerText = moment(d[i].innerText).locale('fr').fromNow()
+   }
+
+</script>
+
+{% endblock %}

@@ -3,19 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <title>Centre médical - Gestion des dossiers patients</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
 </head>
-<header>
-      <div class="col-md-6">
-          <a href="/" class="btn btn-primary">Accueil</a>
-      </div>
-</header>
 <body>
+<header class="header">
+    <br>
+    <div class="col-md-12">
+        <a href="/fhir" class="btn btn-primary">Accueil</a>
+    </div>
+</header>
+<div class="mx-auto text-center">
     <h1>Centre médical - Gestion des dossiers patients</h1>
     <!-- Formulaire pour ajouter un patient -->
-    <h2>Ajouter un patient</h2>
-    <form id="add-patient-form" method="GET">
-        <label for="id">Identifiant :</label>
-        <input type="text" id="id" name="id" value="{{ next_patient_id }}" readonly><br><br>
+    <h2>Ajouter un patient</h2><br><br>
+    <form id="add-patient-form" method="POST">
         <label for="nom">Nom :</label>
         <input type="text" id="nom" name="nom"><br><br>
         <label for="prenom">Prénom :</label>
@@ -31,5 +33,6 @@
         <input type="text" id="medecin" name="medecin"><br><br>
         <button type="submit">Ajouter</button>
     </form>
+</div>
 </body>
 </html>

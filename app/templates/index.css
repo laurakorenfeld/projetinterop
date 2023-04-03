@@ -4,7 +4,8 @@ body {
     margin: 0;
     padding: 0;
     }
-    
+
+    background-image: url('images/acc_medecin.png');
     /* Mise en forme de l'en-tête */
     header {
     background-color: #5a2771;
@@ -32,7 +33,7 @@ body {
     
     /* Mise en forme du bouton d'envoi */
     button[type="submit"] {
-    background-color: #5a2771;
+    background-color: #BCED74;
     color: #5a2771;
     padding: 10px 20px;
     border: none;
