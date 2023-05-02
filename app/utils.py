@@ -5,8 +5,19 @@ def read_json(path):
     with open(path, "r") as f:
         return json.load(f)
 
+#def load_patient():
+#    for
+#    patients = read_json(os.path.join(app.root_path, 'data/Patients/Patient.json'))
+#    return patients
+
 def load_patient():
-    patients = read_json(os.path.join(app.root_path, 'data/Patients/patient.json'))
+    patients = []
+    folder_path = os.path.join(os.getcwd(), 'app/data/Patients')
+    for filename in os.listdir(folder_path):
+        file_path = os.path.join(folder_path, filename)
+        with open(file_path, 'r') as f:
+            patient = json.load(f)
+            patients.append(patient)
     return patients
 
 def get_patient_by_id(patient_id):
@@ -17,8 +28,8 @@ def get_patient_by_id(patient_id):
 
 
 def get_patient_by_id2(patient_id):
-    compte_fichiers("data/Patients")
-    patient = read_json(os.path.join(app.root_path, 'data/Patients/Patient'+patient_id+'.json'))
+    #compte_fichiers("data/Patients")
+    patient = read_json(os.path.join(app.root_path, 'data/Patients/Patient'+str(patient_id)+'.json'))
     return patient
 
 def compte_fichiers(path) :

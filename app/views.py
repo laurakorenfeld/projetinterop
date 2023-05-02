@@ -11,7 +11,7 @@ from hl7apy.core import Message
 
 @app.route("/")
 def accueil():
-    return render_template('index.html')
+    return render_template('acc_medecin.html')
 
 @app.route('/metadata', methods=['GET'])
 def metadata():
@@ -48,7 +48,7 @@ def metadata():
 def patient_list():
     patients = utils.load_patient()
     return render_template('patient.html', patients=patients)
-
+    #return patients
 @app.route("/fhir/Patient/<int:patient_id>")
 def patient_details(patient_id):
     patient = utils.get_patient_by_id(patient_id)
@@ -59,7 +59,8 @@ def aff_acc_med():
     return render_template('acc_medecin.html')
 
 @app.route('/fhir/page_ajout_patient',methods=['GET','POST'])
-def page_ajout_patient(id):
+def page_ajout_patient():
+    # id = compte fichier +1 (un truc du genre)
     if request.method == 'GET':
         return render_template('ajout_patient.html')
     else :
@@ -73,12 +74,13 @@ def page_ajout_patient(id):
         date = datetime.strptime(date_naiss, '%Y-%m-%d')
 
         # Formatage de la date dans le format JJ/MM/AAAA
+        id=2
         date_str = date.strftime('%d/%m/%Y')
-        patients = utils.read_json(os.path.join(app.root_path, 'data/Patients/Patient'+ id + '.json'))
+        patients = utils.read_json(os.path.join(app.root_path, 'data/Patients/Patient'+ str(id) + '.json'))
 
         new_patient = {
             "resourceType": "Patient",
-            "identifier": len(patients) + 1,
+            "identifier": id + 1,
             "active": True,
             "name": f"{prenom} {nom}",
             "telecom": "...",
@@ -109,8 +111,8 @@ def rech_patients():
 @app.route('/fhir/patient_detail/<int:patient_id>')
 def patient_detail(patient_id):
     print(patient_id)
-    patients = utils.load_patient()
-    patient = utils.get_patient_by_id(patient_id)
+    #patients = utils.load_patient()
+    patient = utils.get_patient_by_id2(patient_id)
     print(patient)
     if patient:
         return render_template('patient_detail.html', patient=patient)
