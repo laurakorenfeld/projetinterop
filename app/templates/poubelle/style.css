@@ -8,7 +8,7 @@
   /* Appliquer la couleur de fond */
   body {
 
-    background-image: url('images/acc_medecin.png');
+    background-image: url('static/images/acc_medecin.png');
     color: var(--blanc);
     font-family: sans-serif;
     font-size: 16px;

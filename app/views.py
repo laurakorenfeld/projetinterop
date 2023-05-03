@@ -11,6 +11,10 @@ from hl7apy.core import Message
 
 @app.route("/")
 def accueil():
+    return render_template('index.html')
+
+@app.route("/fhir/acc_medecin")
+def acc_medecin():
     return render_template('acc_medecin.html')
 
 @app.route('/metadata', methods=['GET'])

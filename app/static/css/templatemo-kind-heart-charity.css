@@ -761,7 +761,7 @@ strong {
   DONATE              
 -----------------------------------------*/
 .donate-section {
-  background-image: url('../images/different-people-doing-volunteer-work.jpg');
+  background-image: url('../static/images/different-people-doing-volunteer-work.jpg');
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
@@ -783,7 +783,7 @@ strong {
   NEWS         
 -----------------------------------------*/
 .news-detail-header-section {
-  background-image: url('../images/news/close-up-volunteer-oganizing-stuff-donation.jpg');
+  background-image: url('../static/images/news/close-up-volunteer-oganizing-stuff-donation.jpg');
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
