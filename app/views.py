@@ -1,13 +1,18 @@
 import curses
 import urllib
 
+from flask_sqlalchemy import SQLAlchemy
+
 from app import app
-from datetime import datetime
+from datetime import datetime, timedelta
 from flask import Flask, render_template, request, jsonify, redirect, url_for
 import sqlite3
 from app import utils
 import json, os
 from hl7apy.core import Message
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///rendezvous.db'
+db = SQLAlchemy(app)
 
 @app.route("/")
 def accueil():
@@ -200,6 +205,60 @@ def get_patient_from_server(id):
     url = urllib.request.urlopen('http://172.20.10.2:5000/Patient/'+ id)
     data = json.load(url)
     return render_template('patient_detail.html', patient=data)
+
+class RendezVous(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    date = db.Column(db.String(10), nullable=False)
+    heure = db.Column(db.String(5), nullable=False)
+    medecin = db.Column(db.String(50), nullable=False)
+    nom = db.Column(db.String(50), nullable=False)
+    prenom = db.Column(db.String(50), nullable=False)
+    email = db.Column(db.String(50), nullable=False)
+    telephone = db.Column(db.String(20), nullable=False)
+    message = db.Column(db.String(200), nullable=False)
+
+@app.route('/page_patient/prendre_rendezvous', methods=['POST'])
+def prendre_rendezvous():
+    date = request.form['date']
+    heure = request.form['heure']
+    medecin = request.form['medecin']
+    nom = request.form['nom']
+    prenom = request.form['prenom']
+    email = request.form['email']
+    telephone = request.form['telephone']
+    message = request.form['message']
+    rdv = RendezVous(date=date, heure=heure, medecin=medecin, nom=nom, prenom=prenom, email=email, telephone=telephone, message=message)
+    db.session.add(rdv)
+    db.session.commit()
+    return redirect('/page_patient/rdv')
+
+@app.route('/page_patient/calendrier')
+def calendrier():
+    # Déterminer la semaine en cours
+    debut_semaine = datetime.now().date() - timedelta(days=datetime.now().weekday())
+    fin_semaine = debut_semaine + timedelta(days=6)
+    # Récupérer les rendez-vous pour la semaine en cours
+    rendezvous = RendezVous.query.filter(RendezVous.date >= debut_semaine.strftime('%Y-%m-%d')).filter(RendezVous.date <= fin_semaine.strftime('%Y-%m-%d')).all()
+    # Préparer les données à envoyer au template HTML
+    events = []
+    for rdv in rendezvous:
+        start_time = datetime.strptime(f"{rdv.date} {rdv.heure}", "%Y-%m-%d %H:%M")
+        end_time = start_time + timedelta(minutes=30)  # Durée du rendez-vous = 30 minutes
+        event = {
+            'title': f"{rdv.nom} {rdv.prenom}",
+            'start': start_time.strftime('%Y-%m-%dT%H:%M:%S'),
+            'end': end_time.strftime('%Y-%m-%dT%H:%M:%S'),
+            'backgroundColor': '#ffc107',
+            'borderColor': '#ffc107',
+            'textColor': '#212529',
+        }
+        events.append(event)
+    # Afficher le calendrier
+    return render_template('rdv.html', events=events)
+
+@app.route('/page_patient/rdv')
+def page_rdv():
+    return render_template('rdv.html')
 
 @app.route('/<name>')
 def nom(name):
