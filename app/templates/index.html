@@ -16,6 +16,8 @@
 
         <link href="{{ url_for('static', filename='css/templatemo-kind-heart-charity.css') }}" rel="stylesheet">
 
+        <link href="{{ url_for('static', filename='css/index_connexion_patient.css') }}" rel="stylesheet">
+
     </head>
     
     <body id="section_1">
@@ -96,7 +98,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link click-scroll" href="#section_4">Médecin</a>
+                            <a class="nav-link click-scroll" href="/fhir/acc_medecin">Médecin</a>
                         </li>
 
                         <!--li class="nav-item dropdown">
@@ -401,53 +403,34 @@
                     <div class="row">
 
                         <div class="col-lg-6 col-12">
-                            <h2 class="text-white mb-4">Volunteer</h2>
-
-                            <form class="custom-form volunteer-form mb-5 mb-lg-0" action="#" method="post" role="form">
-                                <h3 class="mb-4">Become a volunteer today</h3>
-
-                                <div class="row">
-                                    <div class="col-lg-6 col-12">
-                                        <input type="text" name="volunteer-name" id="volunteer-name" class="form-control" placeholder="Jack Doe" required>
-                                    </div>
-
-                                    <div class="col-lg-6 col-12">    
-                                        <input type="email" name="volunteer-email" id="volunteer-email" pattern="[^ @]*@[^ @]*" class="form-control" placeholder="Jackdoe@gmail.com" required>
-                                    </div>
-
-                                    <div class="col-lg-6 col-12">
-                                        <input type="text" name="volunteer-subject" id="volunteer-subject" class="form-control" placeholder="Subject" required>
-                                    </div>
-
-                                    <div class="col-lg-6 col-12">
-                                        <div class="input-group input-group-file">
-                                            <input type="file" class="form-control" id="inputGroupFile02">
-                                            
-                                            <label class="input-group-text" for="inputGroupFile02">Upload your CV</label>
-
-                                            <i class="bi-cloud-arrow-up ms-auto"></i>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <textarea name="volunteer-message" rows="3" class="form-control" id="volunteer-message" placeholder="Comment (Optional)"></textarea>
-
-                                <button type="submit" class="form-control">Submit</button>
-                                <a href="/fhir/acc_medecin">
-                                Page medecin
-                            </a>
+                            <h2 class="text-white">Patient</h2>
                             </form>
-                        </div>
-
-                        <div class="col-lg-6 col-12">
-                            <img src="static/images/smiling-casual-woman-dressed-volunteer-t-shirt-with-badge.jpg" class="volunteer-image img-fluid" alt="">
-
-                            <div class="custom-block-body text-center">
-                                <h4 class="text-white mt-lg-3 mb-lg-3">About Volunteering</h4>
-
-                                <p class="text-white">Lorem Ipsum dolor sit amet, consectetur adipsicing kengan omeg kohm tokito Professional charity theme based</p>
+                            <div class="form-structor" name="jsp">
+                            <div class="signup">
+                                <h2 class="form-title" id="signup">S'inscrire</h2>
+                                <div class="form-holder">
+                                    <input type="text" class="input" placeholder="Nom" />
+                                    <input type="text" class="input" placeholder="Prénom" />
+                                    <input type="date" class="input" placeholder="Date de naissance"/>
+                                    <input type="email" class="input" placeholder="Email" />
+                                    <input type="password" class="input" placeholder="Password" />
+                                </div>
+                                <button class="submit-btn">S'inscrire</button>
+                            </div>
+                            <div class="login slide-up">
+                                <div class="center">
+                                    <h2 class="form-title" id="login">Se connecter</h2>
+                                    <div class="form-holder">
+                                        <input type="email" class="input" placeholder="Email" />
+                                        <input type="password" class="input" placeholder="Password" />
+                                    </div>
+                                    <button class="submit-btn">Se connecter</button>
+                                </div>
                             </div>
                         </div>
+                        </div>
+
+
 
                     </div>
                 </div>
@@ -571,7 +554,7 @@
 
                         <div class="col-lg-4 col-12 mx-auto">
                             <form class="custom-form search-form" action="#" method="get" role="form">
-                                <input name="search" type="search" class="form-control" id="search" placeholder="Search" aria-label="Search">
+                                <inut name="search" type="search" class="form-control" id="search" placeholder="Search" aria-label="Search">
 
                                 <button type="submit" class="form-control">
                                     <i class="bi-search"></i>
@@ -1007,6 +990,34 @@
         <script src="js/click-scroll.js"></script>
         <script src="js/counter.js"></script>
         <script src="js/custom.js"></script>
+    <script>console.clear();
+
+const loginBtn = document.getElementById('login');
+const signupBtn = document.getElementById('signup');
+
+loginBtn.addEventListener('click', (e) => {
+	let parent = e.target.parentNode.parentNode;
+	Array.from(e.target.parentNode.parentNode.classList).find((element) => {
+		if(element !== "slide-up") {
+			parent.classList.add('slide-up')
+		}else{
+			signupBtn.parentNode.classList.add('slide-up')
+			parent.classList.remove('slide-up')
+		}
+	});
+});
+
+signupBtn.addEventListener('click', (e) => {
+	let parent = e.target.parentNode;
+	Array.from(e.target.parentNode.classList).find((element) => {
+		if(element !== "slide-up") {
+			parent.classList.add('slide-up')
+		}else{
+			loginBtn.parentNode.parentNode.classList.add('slide-up')
+			parent.classList.remove('slide-up')
+		}
+	});
+});</script>
 
     </body>
 </html>
