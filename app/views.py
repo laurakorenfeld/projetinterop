@@ -1,6 +1,9 @@
 import curses
 import urllib
 
+import cv2
+from requests import Response
+
 from app import app
 from datetime import datetime
 from flask import Flask, render_template, request, jsonify, redirect, url_for
@@ -201,6 +204,26 @@ def get_patient_from_server(id):
     data = json.load(url)
     return render_template('patient_detail.html', patient=data)
 
+camera = cv2.VideoCapture(0)
+
+def generate_frames():
+    while True:
+        success, frame = camera.read()
+        if not success:
+            break
+        else:
+            ret, buffer = cv2.imencode('.jpg', frame)
+            frame = buffer.tobytes()
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+
+@app.route('/visio')
+def visio():
+    return render_template('visio.html')
+
+@app.route('/video_feed')
+def video_feed():
+    return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame', headers={'Access-Control-Allow-Origin': '*'})
 @app.route('/<name>')
 def nom(name):
 

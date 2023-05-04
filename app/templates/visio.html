@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>La plataforma</title>
+
+    <!-- CSS FILES -->
+    <link href="{{ url_for('static', filename='css//bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/bootstrap-icons.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/templatemo-kind-heart-charity.css') }}" rel="stylesheet">
+    <style>
+      #video {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-12 d-flex flex-wrap">
+            <p class="d-flex me-4 mb-0">
+              <i class="bi-geo-alt me-2"></i>
+              122 rue Paul Armangot, 94400 Vitry-sur-Seine
+            </p>
+            <p class="d-flex mb-0">
+              <i class="bi-envelope me-2"></i>
+              <a href="mailto:info@company.com">info@company.com</a>
+            </p>
+          </div>
+          <div class="col-lg-3 col-12 ms-auto d-lg-block d-none">
+            <ul class="social-icon">
+              <li class="social-icon-item">
+                <a href="#" class="social-icon-link bi-twitter"></a>
+              </li>
+              <li class="social-icon-item">
+                <a href="#" class="social-icon-link bi-facebook"></a>
+              </li>
+              <li class="social-icon-item">
+                <a href="#" class="social-icon-link bi-instagram"></a>
+              </li>
+              <li class="social-icon-item">
+                <a href="#" class="social-icon-link bi-youtube"></a>
+              </li>
+              <li class="social-icon-item">
+                <a href="#" class="social-icon-link bi-whatsapp"></a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </header>
+    <h1>Video Streaming Demonstration</h1>
+    <button onclick="toggleCamera()">Allumer/éteindre la caméra</button>
+    <img id="video" src="{{ url_for('video_feed') }}">
+    <script>
+      let cameraOn = false;
+      function toggleCamera() {
+        const video = document.getElementById('video');
+        if (cameraOn) {
+          video.style.display = 'none';
+          cameraOn = false;
+        } else {
+          video.style.display = 'block';
+          cameraOn = true;
+        }
+      }
+    </script>
+  </body>
+</html>
