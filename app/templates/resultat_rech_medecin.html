@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Résultats de recherche</title>
+</head>
+<body>
+    <h1>Résultats de recherche</h1>
+    <table>
+        <tr>
+            <th>Nom</th>
+            <th>Lieu d'exercice</th>
+            <th>Spécialité</th>
+        </tr>
+        {% for practitioner in practitioners %}
+            <tr>
+                <td>{{ practitioner.name }}</td>
+                <td>{{ practitioner.location }}</td>
+                <td>{{ practitioner.specialty }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    <a href="/">Retour à la recherche</a>
+</body>
+</html>
