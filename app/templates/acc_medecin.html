@@ -1,92 +1,214 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Page médecin</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="style.css">
-	  <link rel="preconnect" href="https://fonts.googleapis.com">
-	  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Montserrat:wght@300;600&family=Open+Sans&display=swap" rel="stylesheet">
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
-  </head>
-  <body>
-  <nav class="navbar navbar-expand-lg navbar-light fixed-top">
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse navbar-collapse" id="navbarNav">
-				<ul class="navbar-nav">
-					<li class="nav-item active">
+<head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="/">Accueil</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="presentation.html">À Propos</a>
-					</li>
-				</ul>
-			</div>
-			</div>
-		</nav> <br><br><br><br>
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>La plataforma</title>
+
+        <!-- CSS FILES -->
+        <link href="{{ url_for('static', filename='css//bootstrap.min.css') }}" rel="stylesheet">
+
+        <link href="{{ url_for('static', filename='css/bootstrap-icons.css') }}" rel="stylesheet">
+
+        <link href="{{ url_for('static', filename='css/templatemo-kind-heart-charity.css') }}" rel="stylesheet">
+
+        <link href="{{ url_for('static', filename='css/index_connexion_patient.css') }}" rel="stylesheet">
+
+    </head>
+
+    <body id="section_1">
+
+        <header class="site-header">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-lg-8 col-12 d-flex flex-wrap">
+                        <p class="d-flex me-4 mb-0">
+                            <i class="bi-geo-alt me-2"></i>
+                            122 rue Paul Armangot, 94400 Vitry-sur-Seine
+                        </p>
+
+                        <p class="d-flex mb-0">
+                            <i class="bi-envelope me-2"></i>
+
+                            <a href="mailto:laura.korenfeld@gmail.com">
+                                @mail
+                            </a>
+                        </p>
+                    </div>
+
+                    <div class="col-lg-3 col-12 ms-auto d-lg-block d-none">
+                        <ul class="social-icon">
+                            <li class="social-icon-item">
+                                <a href="#" class="social-icon-link bi-twitter"></a>
+                            </li>
+
+                            <li class="social-icon-item">
+                                <a href="#" class="social-icon-link bi-facebook"></a>
+                            </li>
+
+                            <li class="social-icon-item">
+                                <a href="#" class="social-icon-link bi-instagram"></a>
+                            </li>
+
+                            <li class="social-icon-item">
+                                <a href="#" class="social-icon-link bi-youtube"></a>
+                            </li>
+
+                            <li class="social-icon-item">
+                                <a href="#" class="social-icon-link bi-whatsapp"></a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </header>
+		<nav class="navbar navbar-expand-lg bg-light shadow-lg">
+            <div class="container">
+                <a class="navbar-brand" href="index.html">
+                    <img src="static/images/logo.png" class="logo img-fluid" alt="La plataforma">
+                    <span>
+                        La plataforma
+                        <small>Plateforme de télémédecine</small>
+                    </span>
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link click-scroll" href="/">Menu</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link click-scroll" href="#section_4">Patient</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link click-scroll" href="/fhir/acc_medecin">Médecin</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link click-scroll" href="/apropos">A propos</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
 
     <div class="d-flex flex-column min-vh-100">
       <div class="container content">
         <h1 class="text-center py-4">Bienvenue sur la page médecin</h1>
         <div class="row">
           <div class="col-md-6 d-flex justify-content-center">
-            <a href="/fhir/page_ajout_patient" class="btn btn-primary qare-btn">Ajouter un patient</a>
+			  <a href="/fhir/page_ajout_patient" class="custom-btn btn smoothscroll">Ajouter un patient</a>
+
           </div>
           <div class="col-md-6 d-flex justify-content-center">
-            <a href="/fhir/rech_patient" class="btn btn-primary qare-btn">Rechercher un patient</a>
+			  <a href="/fhir/rech_patient" class="custom-btn btn smoothscroll">Rechercher un patient</a>
           </div>
         </div>
       </div> <br><br><br><br><br>
-		<footer class="footer">
-			<div class="container">
-			  <div class="row">
-				<div class="col-md-4">
-				  <h5 class="text-uppercase mb-4">A propos de nous</h5>
-				  <p>Plateforme de télémédecine....</p>
-				</div>
-				<div class="col-md-4">
-				  <h5 class="text-uppercase mb-4">Contactez-nous</h5>
-				  <ul class="list-unstyled">
-					<li>
-						<a href="https://www.google.com/maps/dir//CHAI+FLO+-+LA+CAVE+-+40550/data=!4m8!4m7!1m0!1m5!1m1!1s0xd53fbe97dfaac63:0x17e2a5d61a27ed0a!2m2!1d-1.3019174!2d43.8784365">
-							<i class="fas fa-map-marker-alt"></i> 172 Avenue du Marensin<br>Paris, France<br><br>
-						</a>
-					</li>
-					<li>
-						<a href="mail:">
-					  		<i class="fas fa-envelope"></i> info@telemedecine.com<br><br>
-						</a>
-					</li>
-					<li>
-						<a href="tel:0664121738">
-							<i class="fas fa-phone"></i> 07 64 22 17 88<br>
-						</a>
-					</li>
-				  </ul>
-				</div>
-				<div class="col-md-4">
-				  <h5 class="text-uppercase mb-4">Nous suivre</h5>
-				  <ul class="list-inline">
-					<li class="list-inline-item">
-					  <a href="https://www.facebook.com>
-						<i class="fa-brands fa-facebook fa-3x"></i>
-					  </a>
-					</li>
-					<li class="list-inline-item">
-					  <a href="https://www.instagram.com">
-						<i class="fa-brands fa-instagram fa-3x"></i>
-					  </a>
-					</li>
-				  </ul>
-				</div>
-			  </div>
-			</div>
-		  </footer>
+        <footer class="site-footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-12 mb-4">
+                        <img src="static/images/logo.png" class="logo img-fluid" alt="">
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-12 mb-4">
+                        <h5 class="site-footer-title mb-3">Liens</h5>
+
+                        <ul class="footer-menu">
+                            <li class="footer-menu-item"><a href="#" class="footer-menu-link">Notre histoire</a></li>
+
+                            <li class="footer-menu-item"><a href="#" class="footer-menu-link">Newsroom</a></li>
+
+                            <li class="footer-menu-item"><a href="#" class="footer-menu-link">Causes</a></li>
+
+                        </ul>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-12 mx-auto">
+                        <h5 class="site-footer-title mb-3">Contact</h5>
+
+                        <p class="text-white d-flex mb-2">
+                            <i class="bi-telephone me-2"></i>
+
+                            <a href="tel: 120-240-9600" class="site-footer-link">
+                                120-240-9600
+                            </a>
+                        </p>
+
+                        <p class="text-white d-flex">
+                            <i class="bi-envelope me-2"></i>
+
+                            <a href="mailto:info@yourgmail.com" class="site-footer-link">
+                                donate@charity.org
+                            </a>
+                        </p>
+
+                        <p class="text-white d-flex mt-3">
+                            <i class="bi-geo-alt me-2"></i>
+                            122 rue Paul Armangot, 94400 Vitry-sur-Seine
+                        </p>
+
+                        <a href="#" class="custom-btn btn mt-3">Get Direction</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="site-footer-bottom">
+                <div class="container">
+                    <div class="row">
+
+                        <div class="col-lg-6 col-md-7 col-12">
+                            <p class="copyright-text mb-0">Copyright © 2023 <a href="#">La plataforma - </a> Laura Korenfeld - Emma Lovisi
+
+                        	EPISEN ITS2 FISA</p><br>
+                        </div>
+
+                        <div class="col-lg-6 col-md-5 col-12 d-flex justify-content-center align-items-center mx-auto">
+                            <ul class="social-icon">
+                                <li class="social-icon-item">
+                                    <a href="#" class="social-icon-link bi-twitter"></a>
+                                </li>
+
+                                <li class="social-icon-item">
+                                    <a href="#" class="social-icon-link bi-facebook"></a>
+                                </li>
+
+                                <li class="social-icon-item">
+                                    <a href="#" class="social-icon-link bi-instagram"></a>
+                                </li>
+
+                                <li class="social-icon-item">
+                                    <a href="#" class="social-icon-link bi-linkedin"></a>
+                                </li>
+
+                                <li class="social-icon-item">
+                                    <a href="https://youtube.com/templatemo" class="social-icon-link bi-youtube"></a>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </footer>
+	</div>
 	</body>
+        <!-- JAVASCRIPT FILES -->
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/jquery.sticky.js"></script>
+        <script src="js/click-scroll.js"></script>
+        <script src="js/counter.js"></script>
+        <script src="js/custom.js"></script>
 </html>
