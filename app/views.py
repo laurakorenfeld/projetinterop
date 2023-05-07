@@ -18,6 +18,10 @@ db = SQLAlchemy(app)
 def accueil():
     return render_template('index.html')
 
+@app.route("/apropos")
+def apropos():
+    return render_template('apropos.html')
+
 @app.route("/fhir/acc_medecin")
 def acc_medecin():
     return render_template('acc_medecin.html')
