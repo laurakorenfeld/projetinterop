@@ -14,68 +14,49 @@ from hl7apy.core import Message
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///rendezvous.db'
 db = SQLAlchemy(app)
 
-import sqlite3
-
-# Connect to the SQLite database
-conn = sqlite3.connect('telemedecine.db')
-c = conn.cursor()
-
-# Create the practitioners table
-# c.execute('''
-# CREATE TABLE practitioners (
-#     id INTEGER PRIMARY KEY,
-#     name TEXT NOT NULL,
-#     location TEXT NOT NULL,
-#     specialty TEXT NOT NULL
-# )
-# ''')
-
-# Insert sample data into the practitioners table
-practitioners = [
-    ('Dr. Dupont', 'Paris', 'Cardiologue'),
-    ('Dr. Martin', 'Lyon', 'Généraliste'),
-    ('Dr. Durand', 'Marseille', 'Pédiatre'),
-    ('Dr. Moreau', 'Bordeaux', 'Dermatologue'),
-    ('Dr. Legrand', 'Toulouse', 'Chirurgien'),
-    ('Dr. Petit', 'Nantes', 'Radiologue'),
-    ('Dr. Garnier', 'Lille', 'Orthodontiste'),
-    ('Dr. Roux', 'Strasbourg', 'Gastro-entérologue'),
-    ('Dr. Ribeiro', 'Nice', 'Neurologue'),
-    ('Dr. Lemaire', 'Grenoble', 'Ophtalmologiste'),
-    ('Dr. Fontaine', 'Rennes', 'Psychiatre'),
-    ('Dr. Chevalier', 'Toulon', 'Pneumologue'),
-    ('Dr. Brun', 'Angers', 'Néphrologue'),
-    ('Dr. Nguyen', 'Reims', 'Rhumatologue'),
-    ('Dr. Vincent', 'Montpellier', 'Endocrinologue'),
-    ('Dr. Da Silva', 'Tours', 'Oncologue'),
-    ('Dr. Lambert', 'Dijon', 'Chirurgien plastique'),
-    ('Dr. Mercier', 'Brest', 'Allergologue'),
-    ('Dr. Girard', 'Le Havre', 'Gynécologue'),
-    ('Dr. Guillaume', 'Saint-Étienne', 'Oto-rhino-laryngologiste'),
-    ('Dr. Haddad', 'Nîmes', 'Urologue'),
-    ('Dr. Fernandez', 'Clermont-Ferrand', 'Orthopédiste'),
-    ('Dr. Boucher', 'Limoges', 'Hématologue'),
-    ('Dr. Lacroix', 'Annecy', 'Cardiologue'),
-    ('Dr. Schmidt', 'Perpignan', 'Généraliste'),
-    ('Dr. Garcia', 'Caen', 'Pédiatre'),
-]
-
-for practitioner in practitioners:
-    c.execute("INSERT INTO practitioners (name, location, specialty) VALUES (?, ?, ?)", practitioner)
-
-# Commit the changes and close the connection
-conn.commit()
-conn.close()
-
-
 @app.route("/")
 def accueil():
     return render_template('index.html')
+
 
 @app.route("/apropos")
 def apropos():
     return render_template('apropos.html')
 
+@app.route('/search_practitioners', methods=['POST','GET'])
+def search_practitioners():
+    conn = sqlite3.connect('telemedecine.db')
+    c = conn.cursor()
+    if request.method == 'GET':
+        c.execute("SELECT * FROM practitioners")
+
+        results = c.fetchall()
+        print(results)
+        conn.close()
+        return render_template('resultat_rech_medecin.html', practitioners=results)
+
+    specialty = request.form['specialty']
+    location = request.form['location']
+
+    if specialty == '':
+        c.execute("SELECT * FROM practitioners WHERE location LIKE ?", ('%' + location + '%',))
+    elif location == '':
+        c.execute("SELECT * FROM practitioners WHERE specialty LIKE ?", ('%' + specialty + '%',))
+    else:
+        c.execute("SELECT * FROM practitioners WHERE specialty LIKE ? AND location LIKE ?",
+                  ('%' + specialty + '%', '%' + location + '%'))
+
+    results = c.fetchall()
+    conn.close()
+    return render_template('resultat_rech_medecin.html', practitioners=results)
+
+@app.route("/connexion_medecin")
+def connexion_medecin():
+    return render_template('connexion_medecin.html')
+
+@app.route("/infos_medecin")
+def infos_medecin():
+    return render_template('infos_medecin.html')
 @app.route('/metadata', methods=['GET'])
 def metadata():
     # get the resources supported
@@ -105,28 +86,33 @@ def metadata():
     }
 
     # return the metadata as a JSON object
-    return jsonify(metadata)\
-
+    return jsonify(metadata) \
+ \
+ \
 @app.route("/fhir/Patient")
 def patient_list():
     patients = utils.load_patient()
     return render_template('patient.html', patients=patients)
-    #return patients
+    # return patients
+
+
 @app.route("/fhir/Patient/<int:patient_id>")
 def patient_details(patient_id):
     patient = utils.get_patient_by_id(patient_id)
-    return render_template('patient_detail.html',patient=patient)
+    return render_template('patient_detail.html', patient=patient)
 
-@app.route('/fhir',methods=['GET'])
+
+@app.route('/fhir', methods=['GET'])
 def aff_acc_med():
     return render_template('acc_medecin.html')
 
-@app.route('/fhir/page_ajout_patient',methods=['GET','POST'])
+
+@app.route('/fhir/page_ajout_patient', methods=['GET', 'POST'])
 def page_ajout_patient():
     # id = compte fichier +1 (un truc du genre)
     if request.method == 'GET':
         return render_template('ajout_patient.html')
-    else :
+    else:
         nom = request.form["nom"]
         prenom = request.form["prenom"]
         genre = request.form["genre"]
@@ -137,9 +123,9 @@ def page_ajout_patient():
         date = datetime.strptime(date_naiss, '%Y-%m-%d')
 
         # Formatage de la date dans le format JJ/MM/AAAA
-        id=2
+        id = 2
         date_str = date.strftime('%d/%m/%Y')
-        patients = utils.read_json(os.path.join(app.root_path, 'data/Patients/Patient'+ str(id) + '.json'))
+        patients = utils.read_json(os.path.join(app.root_path, 'data/Patients/Patient' + str(id) + '.json'))
 
         new_patient = {
             "resourceType": "Patient",
@@ -153,13 +139,13 @@ def page_ajout_patient():
 
         patients.append(new_patient)
 
-        with open(os.path.join(app.root_path, 'data/Patients/patient'+ id + '.json'), 'w') as f:
+        with open(os.path.join(app.root_path, 'data/Patients/patient' + id + '.json'), 'w') as f:
             json.dump(patients, f)
 
         return redirect(url_for('patient_list'))
 
 
-@app.route('/fhir/rech_patient', methods=['GET','POST'])
+@app.route('/fhir/rech_patient', methods=['GET', 'POST'])
 def rech_patients():
     if request.method == 'GET':
         return render_template('affiche_patient.html')
@@ -171,10 +157,11 @@ def rech_patients():
         else:
             return 'Patient non trouvé'
 
+
 @app.route('/fhir/patient_detail/<int:patient_id>')
 def patient_detail(patient_id):
     print(patient_id)
-    #patients = utils.load_patient()
+    # patients = utils.load_patient()
     patient = utils.get_patient_by_id2(patient_id)
     print(patient)
     if patient:
@@ -182,18 +169,19 @@ def patient_detail(patient_id):
     else:
         return 'Patient non trouvé'
 
-@app.route('/patients/<int:id>', methods=['GET','PUT', 'DELETE'])
+
+@app.route('/patients/<int:id>', methods=['GET', 'PUT', 'DELETE'])
 def personne(id):
     conn = sqlite3.connect('dossiers_medicaux.db')
-    cursor  = conn.cursor()
+    cursor = conn.cursor()
     if request.method == 'GET':
         cursor = conn.execute("SELECT * FROM patient WHERE id={}".format(id))
         rows = cursor.fetchall()
-        for r in rows :
+        for r in rows:
             personne = r
-        if personne is not None :
+        if personne is not None:
             return jsonify(personne), 200
-        else :
+        else:
             return "Something wrong", 404
     if request.method == 'PUT':
         sql = """UPDATE patient
@@ -226,39 +214,42 @@ def personne(id):
         conn.commit()
         return "La personne avec id est {} a été effacée".format(id), 201
 
+
 @app.route("/patientjson/<id>")
 def userdata(id):
-  document_path = os.getcwd() + '/app/data/Patients/Patient' + id + '.json'
-  f = open(document_path, 'r')
-  data = json.load(f)
-  f.close()
-  return data
+    document_path = os.getcwd() + '/app/data/Patients/Patient' + id + '.json'
+    f = open(document_path, 'r')
+    data = json.load(f)
+    f.close()
+    return data
+
 
 def immunizationdata(id):
-  document_path = os.getcwd() + '/app/static/data/immunization/' + id + '.json'
-  f = open(document_path, 'r')
-  data = json.load(f)
-  f.close()
-  return data
+    document_path = os.getcwd() + '/app/static/data/immunization/' + id + '.json'
+    f = open(document_path, 'r')
+    data = json.load(f)
+    f.close()
+    return data
 
 
 @app.route("/patient/<id>")
 def patient(id):
-
     patient = userdata(id)
     return render_template('patient_detail.html', patient=patient)
 
+
 @app.route("/immunization/<id>")
 def immunization(id):
-
-    data = immunizationdata (id)
+    data = immunizationdata(id)
     return render_template('immunization.html', utilisateur=data)
+
 
 @app.route('/serv/<id>')
 def get_patient_from_server(id):
-    url = urllib.request.urlopen('http://172.20.10.2:5000/Patient/'+ id)
+    url = urllib.request.urlopen('http://172.20.10.2:5000/Patient/' + id)
     data = json.load(url)
     return render_template('patient_detail.html', patient=data)
+
 
 class RendezVous(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -271,6 +262,7 @@ class RendezVous(db.Model):
     telephone = db.Column(db.String(20), nullable=False)
     message = db.Column(db.String(200), nullable=False)
 
+
 @app.route('/page_patient/prendre_rendezvous', methods=['POST'])
 def prendre_rendezvous():
     date = request.form['date']
@@ -281,10 +273,12 @@ def prendre_rendezvous():
     email = request.form['email']
     telephone = request.form['telephone']
     message = request.form['message']
-    rdv = RendezVous(date=date, heure=heure, medecin=medecin, nom=nom, prenom=prenom, email=email, telephone=telephone, message=message)
+    rdv = RendezVous(date=date, heure=heure, medecin=medecin, nom=nom, prenom=prenom, email=email, telephone=telephone,
+                     message=message)
     db.session.add(rdv)
     db.session.commit()
     return redirect('/page_patient/rdv')
+
 
 @app.route('/page_patient/calendrier')
 def calendrier():
@@ -292,7 +286,8 @@ def calendrier():
     debut_semaine = datetime.now().date() - timedelta(days=datetime.now().weekday())
     fin_semaine = debut_semaine + timedelta(days=6)
     # Récupérer les rendez-vous pour la semaine en cours
-    rendezvous = RendezVous.query.filter(RendezVous.date >= debut_semaine.strftime('%Y-%m-%d')).filter(RendezVous.date <= fin_semaine.strftime('%Y-%m-%d')).all()
+    rendezvous = RendezVous.query.filter(RendezVous.date >= debut_semaine.strftime('%Y-%m-%d')).filter(
+        RendezVous.date <= fin_semaine.strftime('%Y-%m-%d')).all()
     # Préparer les données à envoyer au template HTML
     events = []
     for rdv in rendezvous:
@@ -310,14 +305,16 @@ def calendrier():
     # Afficher le calendrier
     return render_template('rdv.html', events=events)
 
+
 @app.route('/page_patient/rdv')
 def page_rdv():
     return render_template('rdv.html')
 
+
 @app.route('/<name>')
 def nom(name):
-
     return 'Salut! Je pense que tu as fait une erreur dans ta requête : {}'.format(name)
 
-if __name__=='__main':
+
+if __name__ == '__main':
     app.run(debug=True)

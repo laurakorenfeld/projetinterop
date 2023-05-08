@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-<head>
+    <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -36,7 +36,7 @@
                             <i class="bi-envelope me-2"></i>
 
                             <a href="mailto:laura.korenfeld@gmail.com">
-                                @mail
+                                laura.korenfeld@gmail.com
                             </a>
                         </p>
                     </div>
@@ -68,9 +68,10 @@
                 </div>
             </div>
         </header>
-		<nav class="navbar navbar-expand-lg bg-light shadow-lg">
+
+        <nav class="navbar navbar-expand-lg bg-light shadow-lg">
             <div class="container">
-                <a class="navbar-brand" href="#">
+                <a class="navbar-brand" href="index.html">
                     <img src="static/images/logo.png" class="logo img-fluid" alt="La plataforma">
                     <span>
                         La plataforma
@@ -85,11 +86,15 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
-                            <a class="nav-link click-scroll" href="/">Menu</a>
+                            <a class="nav-link click-scroll" href="#top">Menu</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link click-scroll" href="#">Médecin</a>
+                            <a class="nav-link click-scroll" href="#section_4">Patient</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link click-scroll" href="/fhir">Médecin</a>
                         </li>
 
                         <li class="nav-item">
@@ -100,19 +105,31 @@
             </div>
         </nav>
 
-    <div class="d-flex flex-column min-vh-100">
-      <div class="container content">
-        <h1 class="text-center py-4">Bienvenue sur la page médecin</h1>
-        <div class="row">
-          <div class="col-md-6 d-flex justify-content-center">
-			  <a href="/fhir/page_ajout_patient" class="custom-btn btn smoothscroll">Ajouter un patient</a>
+        <main>
+            <section class="volunteer-section section-padding" id="section_4">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-6 col-12">
+                            <h2 class="text-white">Praticien</h2>
+                            <div class="form-structor" name="jsp">
+                            <div class="login">
+                                <div class="center">
+                                    <div class="form-holder">
+                                        <input type="text" class="input" placeholder="Identifiant" />
+                                        <input type="password" class="input" placeholder="Password" />
+                                    </div>
+                                    <button class="submit-btn">Se connecter</button>
+                                    <a class="submit-btn" href="/fhir">pas sécu</a>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-          </div>
-          <div class="col-md-6 d-flex justify-content-center">
-			  <a href="/fhir/rech_patient" class="custom-btn btn smoothscroll">Rechercher un patient</a>
-          </div>
-        </div>
-      </div> <br><br><br><br><br>
+        </main>
+
         <footer class="site-footer">
             <div class="container">
                 <div class="row">
@@ -200,8 +217,7 @@
                 </div>
             </div>
         </footer>
-	</div>
-	</body>
+
         <!-- JAVASCRIPT FILES -->
         <script src="js/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
@@ -209,4 +225,34 @@
         <script src="js/click-scroll.js"></script>
         <script src="js/counter.js"></script>
         <script src="js/custom.js"></script>
+    <script>console.clear();
+
+const loginBtn = document.getElementById('login');
+const signupBtn = document.getElementById('signup');
+
+loginBtn.addEventListener('click', (e) => {
+	let parent = e.target.parentNode.parentNode;
+	Array.from(e.target.parentNode.parentNode.classList).find((element) => {
+		if(element !== "slide-up") {
+			parent.classList.add('slide-up')
+		}else{
+			signupBtn.parentNode.classList.add('slide-up')
+			parent.classList.remove('slide-up')
+		}
+	});
+});
+
+signupBtn.addEventListener('click', (e) => {
+	let parent = e.target.parentNode;
+	Array.from(e.target.parentNode.classList).find((element) => {
+		if(element !== "slide-up") {
+			parent.classList.add('slide-up')
+		}else{
+			loginBtn.parentNode.parentNode.classList.add('slide-up')
+			parent.classList.remove('slide-up')
+		}
+	});
+});</script>
+
+    </body>
 </html>
