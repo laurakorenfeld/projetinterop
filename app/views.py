@@ -10,9 +10,14 @@ import sqlite3
 from app import utils
 import json, os
 from hl7apy.core import Message
+import bcrypt
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///rendezvous.db'
 db = SQLAlchemy(app)
+
+'''
+Routes basiques
+'''
 
 @app.route("/")
 def accueil():
@@ -25,10 +30,10 @@ def apropos():
 
 @app.route('/search_practitioners', methods=['POST','GET'])
 def search_practitioners():
-    conn = sqlite3.connect('telemedecine.db')
+    conn = sqlite3.connect('theBDD.db')
     c = conn.cursor()
     if request.method == 'GET':
-        c.execute("SELECT * FROM practitioners")
+        c.execute("SELECT * FROM doctors")
 
         results = c.fetchall()
         print(results)
@@ -39,11 +44,11 @@ def search_practitioners():
     location = request.form['location']
 
     if specialty == '':
-        c.execute("SELECT * FROM practitioners WHERE location LIKE ?", ('%' + location + '%',))
+        c.execute("SELECT * FROM doctors WHERE location LIKE ?", ('%' + location + '%',))
     elif location == '':
-        c.execute("SELECT * FROM practitioners WHERE specialty LIKE ?", ('%' + specialty + '%',))
+        c.execute("SELECT * FROM doctors WHERE specialty LIKE ?", ('%' + specialty + '%',))
     else:
-        c.execute("SELECT * FROM practitioners WHERE specialty LIKE ? AND location LIKE ?",
+        c.execute("SELECT * FROM doctors WHERE specialty LIKE ? AND location LIKE ?",
                   ('%' + specialty + '%', '%' + location + '%'))
 
     results = c.fetchall()
