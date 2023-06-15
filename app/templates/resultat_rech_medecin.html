@@ -125,9 +125,30 @@
         {% endfor %}
     </div>
 </div>
-
-    <a href="/">Retour à la recherche</a>
  </section>
+        <section class="volunteer-section section-padding" id="section_3">
+                <div class="container center">
+                    <div class="row">
+
+                        <div class="lg-12 row">
+                            <form action="{{ url_for('search_practitioners') }}" method="post">
+                                <div class="form-structor2">
+                                    <div class="signup2"><br>
+                                        <h2 class="form-title2" id="rech_praticiens">Rechercher un autre praticien</h2>
+                                        <div class="form-holder2">
+                                            <input type="text" class="input2" placeholder="Spécialité" name="specialty"/>
+                                            <input type="text" class="input2" placeholder="Localisation" name="location"/>
+                                    </div>
+                                    <button class="submit-btn2">Recherche</button>
+                                        <a href="/search_practitioners" class="submit-btn2 text-center">Voir tout</a>
+                                </div>
+
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
 <footer class="site-footer">
             <div class="container">
                 <div class="row">

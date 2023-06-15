@@ -1,6 +1,7 @@
 import curses
 import urllib
 
+#from fhirclient.models.appointment import Appointment
 from flask_sqlalchemy import SQLAlchemy
 
 from app import app
@@ -9,6 +10,7 @@ from flask import Flask, render_template, request, jsonify, redirect, url_for
 import sqlite3
 from app import utils
 import json, os
+from dateutil.parser import parse
 from hl7apy.core import Message
 import bcrypt
 
@@ -19,16 +21,18 @@ db = SQLAlchemy(app)
 Routes basiques
 '''
 
+
 @app.route("/")
 def accueil():
-    return render_template('index.html')
+    return render_template('index_vrai.html')
 
 
 @app.route("/apropos")
 def apropos():
     return render_template('apropos.html')
 
-@app.route('/search_practitioners', methods=['POST','GET'])
+
+@app.route('/search_practitioners', methods=['POST', 'GET'])
 def search_practitioners():
     conn = sqlite3.connect('theBDD.db')
     c = conn.cursor()
@@ -55,13 +59,54 @@ def search_practitioners():
     conn.close()
     return render_template('resultat_rech_medecin.html', practitioners=results)
 
+
 @app.route("/connexion_medecin")
 def connexion_medecin():
     return render_template('connexion_medecin.html')
 
-@app.route("/infos_medecin")
-def infos_medecin():
-    return render_template('infos_medecin.html')
+@app.route('/infos_medecin/<int:practitioner_id>')
+
+def infos_medecin(practitioner_id):
+
+    conn = sqlite3.connect('theBDD.db')
+    c = conn.cursor()
+    cur = c.execute('SELECT * FROM appointments WHERE doctor_id = ?', (practitioner_id,))
+    appointments = cur.fetchall()
+
+    # Organize the appointments by day and hour for easy display
+    appointment_schedule = {"Lundi": [], "Mardi": [], "Mercredi": [], "Jeudi": [], "Vendredi": []}
+    days_in_french = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]
+    for appointment in appointments:
+        date_str = str(appointment[3])
+        print(date_str)
+        day = datetime.strptime(date_str, '%Y-%m-%d %H:%M:%S').strftime('%d')
+        if day in appointment_schedule:
+            appointment_schedule[day].append((appointment[1], appointment[2], date_str))
+
+    conn.close()
+    # Pass the appointments to the template
+    return render_template('infos_medecin.html', appointments=appointment_schedule)
+
+@app.route('/get_appointments')
+def get_appointments():
+    conn = sqlite3.connect('theBDD.db')
+    c = conn.cursor()
+    cur = c.execute('SELECT * FROM appointments')
+    appointments = cur.fetchall()
+    conn.close()
+
+    # Format appointments in the format expected by FullCalendar
+    events = []
+    for appointment in appointments:
+        events.append({
+            'title': 'Appointment with patient {}'.format(appointment[2]),
+            'start': appointment[3],
+            'allDay': False
+        })
+
+    return jsonify(events)
+
+
 @app.route('/metadata', methods=['GET'])
 def metadata():
     # get the resources supported
@@ -91,9 +136,8 @@ def metadata():
     }
 
     # return the metadata as a JSON object
-    return jsonify(metadata) \
- \
- \
+    return jsonify(metadata)
+
 @app.route("/fhir/Patient")
 def patient_list():
     patients = utils.load_patient()
@@ -315,6 +359,9 @@ def calendrier():
 def page_rdv():
     return render_template('rdv.html')
 
+@app.route('/monchat')
+def chatetvideo():
+    return redirect("https://127.0.0.1:3000/mon-chat-video", code=302)
 
 @app.route('/<name>')
 def nom(name):

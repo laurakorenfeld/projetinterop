@@ -104,21 +104,32 @@
                 </div>
             </div>
         </nav>
-<div class="mx-auto text-center">
-    <h1>Centre médical - Gestion des dossiers patients</h1>
-    <!-- Formulaire pour rechercher un patient -->
-    <h2>Rechercher un patient</h2><br><br>
-    <form id="search-patient-form" method="POST">
-        <label for="identifiant">Identifiant du patient:</label>
-        <input type="text" id="identifiant" name="patient_id"><br><br>
-        <button type="submit">Rechercher</button>
-    </form>
-</div>
+                    <section class="volunteer-section section-padding" id="section_4">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-6 col-12">
+                            <h2 class="text-white">Rechercher un dossier patient</h2>
+                            <form id="search-patient-form" method="POST">
+                            <div class="form-structor2">
+                            <div class="signup2">
+                                <div class="center">
+                                    <div class="form-holder2">
+                                        <input type="text" class="input2" placeholder="Identifiant" name="patient_id"/>
+                                    </div>
+                                    <button class="submit-btn2">Rechercher</button>
+                                    <a class="submit-btn2 text-center" href="/fhir/Patient">Tout afficher</a>
+                                </div>
+                            </div>
+                        </div></form>
+                        </div>
+                    </div>
+                    </div></div>
+            </section>
  <footer class="site-footer">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-3 col-12 mb-4">
-                        <img src="static/images/logo.png" class="logo img-fluid" alt="">
+                        <img src="../static/images/logo.png" class="logo img-fluid" alt="">
                     </div>
 
                     <div class="col-lg-4 col-md-6 col-12 mb-4">
