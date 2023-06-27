@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<!--
+ ! Excerpted from "Programming WebRTC",
+ ! published by The Pragmatic Bookshelf.
+ ! Copyrights apply to this code. It may not be used to create training material,
+ ! courses, books, articles, and the like. Contact us if you are in doubt.
+ ! We make no guarantees that this code is fit for any purpose.
+ ! Visit https://pragprog.com/titles/ksrtc for more book information.
+-->
+<html lang="en">
+<head>
+  <title>Chat & vidéo</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,shrink-to-fit=no" />
+  <link rel="stylesheet" href="css/screen.css" />
+</head>
+<nav class="navbar navbar-expand-lg bg-light shadow-lg">
+            <div class="container">
+                <a class="navbar-brand" href="#">
+                    <img src="img/logo.png" class="logo img-fluid" alt="La plataforma">
+                    <span>
+                        La plataforma
+                        <small>Plateforme de télémédecine</small>
+                    </span>
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link click-scroll" href="http://127.0.0.1:5000">Menu</a>
+
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link click-scroll" href="#">Médecin</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link click-scroll" href="/apropos">A propos</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+<body>
+<main id="interface">
+  <header id="header">
+    <h1>Bienvenue !</h1>
+    <button class="join" type="button" id="call-button">Joindre l'appel</button>
+  </header>
+  <article id="videos">
+    <h2 class="preserve-access">Streaming Videos</h2>
+    <video id="self"
+      autoplay
+      muted
+      playsinline
+      poster="img/placeholder.png">
+    </video>
+    <video id="peer"
+      autoplay
+      playsinline
+      poster="img/placeholder.png">
+    </video>
+    <p id="mic-status" aria-hidden="true">Remote peer is muted.</p>
+  </article>
+  <aside id="chat">
+    <h2 class="preserve-access">Text Chat</h2>
+    <ol id="chat-log"></ol>
+    <form id="chat-form" action="#null">
+      <label for="chat-msg" class="preserve-access">Compose Message</label>
+      <input type="text" id="chat-msg" name="chat-msg" autocomplete="off" />
+      <button type="submit" id="chat-btn">Send</button>
+    </form>
+  </aside>
+  <footer id="footer">
+    <button
+      aria-label="Toggle microphone"
+      role="switch"
+      aria-checked="true"
+      type="button"
+      id="toggle-mic">Micro</button>
+    <button
+      aria-label="Toggle camera"
+      role="switch"
+      aria-checked="true"
+      type="button"
+      id="toggle-cam">Caméra</button>
+      <button
+  aria-label="quitter_page"
+  type="button"
+  id="quitter_page">Quitter</button>
+
+<script>
+document.getElementById('quitter_page').addEventListener('click', function() {
+  window.location.href = "https://127.0.0.1:3000/mon-chat-video/accueil-salle.html";
+});
+</script>
+
+  </footer>
+</main>
+<script src="/socket.io/socket.io.js"></script>
+<script
+  src="https://webrtchacks.github.io/adapter/adapter-latest.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

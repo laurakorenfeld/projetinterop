@@ -153,7 +153,16 @@
   <div class="row justify-content-center mb-5">
     <a class="btn btn-primary mt-2" href="/fhir/Patient" role="button">Retourner à la page de la liste des patients</a>
   </div>
-
+     </div>
+        <div class="row">
+<div class="col-md-6 d-flex justify-content-center">
+  <!-- Add "data-toggle" and "data-target" attributes to trigger the modal with id "joinRoomModal" -->
+  <a class="custom-btn btn smoothscroll" data-toggle="modal" data-target="#joinRoomModal">Rejoindre une salle</a>
+</div>
+          </div>
+          <div class="col-md-6 d-flex justify-content-center">
+			  <a href="https://127.0.0.1:3000/mon-chat-video" class="custom-btn btn smoothscroll">Créer une salle pour téléconsulter</a>
+          </div>
 {% else %}
 <p class="text-center"><i>Aucun résultats retourné!!!</i></p>
 {% endif %}
@@ -166,10 +175,6 @@
    }
 
 </script>
-
-
-{% endblock %}
-</div>
 
             <footer class="site-footer">
             <div class="container">
@@ -218,7 +223,7 @@
                         <a href="#" class="custom-btn btn mt-3">Get Direction</a>
                     </div>
                 </div>
-            </div>
+
 
             <div class="site-footer-bottom">
                 <div class="container">
@@ -294,6 +299,11 @@ signupBtn.addEventListener('click', (e) => {
 		}
 	});
 });</script>
+
+
+
+
+{% endblock %}
 
     </body>
 </html>

@@ -361,7 +361,7 @@ def page_rdv():
 
 @app.route('/monchat')
 def chatetvideo():
-    return redirect("https://127.0.0.1:3000/mon-chat-video", code=302)
+    return redirect("http://127.0.0.1:3000/mon-chat-video/accueil-salle.html", code=302)
 
 @app.route('/<name>')
 def nom(name):
