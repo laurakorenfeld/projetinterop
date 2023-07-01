@@ -1,26 +1,95 @@
 import curses
 import urllib
 
-#from fhirclient.models.appointment import Appointment
+# from fhirclient.models.appointment import Appointment
 from flask_sqlalchemy import SQLAlchemy
-
+from werkzeug.security import generate_password_hash
+from werkzeug.security import check_password_hash
 from app import app
 from datetime import datetime, timedelta
 from flask import Flask, render_template, request, jsonify, redirect, url_for
 import sqlite3
 from app import utils
 import json, os
+from flask_login import LoginManager, login_user, UserMixin, logout_user, login_required
+from flask import flash
+from flask_login import current_user
 from dateutil.parser import parse
 from hl7apy.core import Message
 import bcrypt
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///rendezvous.db'
-db = SQLAlchemy(app)
 
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///TheBDD.db'
+app.config["SECRET_KEY"] = "abc"
+db = SQLAlchemy(app)
+login_manager = LoginManager(app)
+login_manager.login_view = 'login'
+
+# Définition du modèle de l'utilisateur
+class Doctors(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(50), unique=True)
+    password = db.Column(db.String(100))
+
+# Fonction de chargement de l'utilisateur
+@login_manager.user_loader
+def load_user(user_id):
+    return Doctors.query.get(user_id)
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        # Vérification si l'utilisateur existe déjà
+        existing_user = Doctors.query.filter_by(username=username).first()
+        if existing_user:
+            return 'Cet utilisateur existe déjà'
+
+        # Hachage du mot de passe
+        hashed_password = bcrypt.hashpw(password, bcrypt.gensalt())
+
+        # Création d'un nouvel utilisateur
+        new_user = Doctors(username=username, password=hashed_password)
+        db.session.add(new_user)
+        db.session.commit()
+
+        return redirect(url_for('login'))
+
+    return render_template('sign_up.html')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        # Recherche de l'utilisateur dans la base de données
+        user = Doctors.query.filter_by(username=username).first()
+        test=1
+        if test == 1 :
+            return redirect(url_for('accueil'))
+
+        # Vérification du mot de passe
+        if user and bcrypt.checkpw(password, user.password):
+            # Authentification réussie
+            login_user(user)
+            return redirect(url_for('search_practitioners'))
+        else:
+            # Authentification échouée
+            return 'Identifiant ou mot de passe incorrect'
+
+    return render_template('login.html')
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('accueil'))
 '''
 Routes basiques
 '''
-
 
 @app.route("/")
 def accueil():
@@ -60,14 +129,28 @@ def search_practitioners():
     return render_template('resultat_rech_medecin.html', practitioners=results)
 
 
-@app.route("/connexion_medecin")
+@app.route("/connexion_medecin", methods=['GET', 'POST'])
 def connexion_medecin():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        # Recherche de l'utilisateur dans la base de données
+        user = Doctors.query.filter_by(username=username).first()
+        #return render_template('acc_medecin.html')
+        # Vérification du mot de passe
+        if user and password == user.password:
+            # Authentification réussie
+            login_user(user)
+            return redirect(url_for('aff_acc_med'))
+        else:
+            # Authentification échouée
+            return 'Identifiant ou mot de passe incorrect'
     return render_template('connexion_medecin.html')
 
+
 @app.route('/infos_medecin/<int:practitioner_id>')
-
 def infos_medecin(practitioner_id):
-
     conn = sqlite3.connect('theBDD.db')
     c = conn.cursor()
     cur = c.execute('SELECT * FROM appointments WHERE doctor_id = ?', (practitioner_id,))
@@ -86,6 +169,7 @@ def infos_medecin(practitioner_id):
     conn.close()
     # Pass the appointments to the template
     return render_template('infos_medecin.html', appointments=appointment_schedule)
+
 
 @app.route('/get_appointments')
 def get_appointments():
@@ -138,6 +222,7 @@ def metadata():
     # return the metadata as a JSON object
     return jsonify(metadata)
 
+
 @app.route("/fhir/Patient")
 def patient_list():
     patients = utils.load_patient()
@@ -151,7 +236,7 @@ def patient_details(patient_id):
     return render_template('patient_detail.html', patient=patient)
 
 
-@app.route('/fhir', methods=['GET'])
+@app.route('/fhir', methods=['GET','POST'])
 def aff_acc_med():
     return render_template('acc_medecin.html')
 
@@ -167,30 +252,55 @@ def page_ajout_patient():
         genre = request.form["genre"]
         # Récupération de la date depuis le formulaire
         date_naiss = request.form["date_naissance"]
-
         # Conversion de la date en un objet datetime
         date = datetime.strptime(date_naiss, '%Y-%m-%d')
-
         # Formatage de la date dans le format JJ/MM/AAAA
-        id = 2
         date_str = date.strftime('%d/%m/%Y')
-        patients = utils.read_json(os.path.join(app.root_path, 'data/Patients/Patient' + str(id) + '.json'))
+        #patients = utils.read_json(os.path.join(app.root_path, 'data/Patients/Patient' + str(id) + '.json'))
+        # Chemin vers le répertoire où sont stockées les données des patients
+        directory = os.path.join(app.root_path, 'data/Patients/')
+
+        # Obtenir une liste de tous les fichiers dans le répertoire
+        files = os.listdir(directory)
+
+        # Filtrer la liste pour inclure uniquement les fichiers .json
+        json_files = [file for file in files if file.endswith('.json')]
+
+        # Le nouvel ID sera le nombre actuel de fichiers json plus 1
+        new_id = len(json_files) + 1
 
         new_patient = {
             "resourceType": "Patient",
-            "identifier": id + 1,
+            "identifier": [
+                {
+                    "use": "official",
+                    "system": "http://example.com/identifier",
+                    "value": str(new_id)
+                }
+            ],
             "active": True,
-            "name": f"{prenom} {nom}",
-            "telecom": "...",
+            "name": [
+                {
+                    "family": nom,
+                    "given": [prenom],
+                }
+            ],
+            "telecom": [
+                {
+                    "system": "phone",
+                    "value": "555-555-5555"
+                },
+                {
+                    "system": "email",
+                    "value": "test@example.com"
+                }
+            ],
             "gender": genre,
             "birthDate": date_str,
         }
 
-        patients.append(new_patient)
-
-        with open(os.path.join(app.root_path, 'data/Patients/patient' + id + '.json'), 'w') as f:
-            json.dump(patients, f)
-
+        with open(os.path.join(directory, 'Patient' + str(new_id) + '.json'), 'w') as f:
+            json.dump(new_patient, f)
         return redirect(url_for('patient_list'))
 
 
@@ -359,9 +469,11 @@ def calendrier():
 def page_rdv():
     return render_template('rdv.html')
 
+
 @app.route('/monchat')
 def chatetvideo():
     return redirect("http://127.0.0.1:3000/mon-chat-video/accueil-salle.html", code=302)
+
 
 @app.route('/<name>')
 def nom(name):

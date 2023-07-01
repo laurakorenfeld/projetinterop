@@ -114,11 +114,12 @@
                             <div class="form-structor" name="jsp">
                             <div class="login">
                                 <div class="center">
-                                    <div class="form-holder">
-                                        <input type="text" class="input" placeholder="Identifiant" />
-                                        <input type="password" class="input" placeholder="Mot de passe" />
-                                    </div>
-                                    <button class="submit-btn">Se connecter</button>
+                                    <form class="form-holder" method="post" action="#">
+                                        <input type="text" class="input" name="username" placeholder="Identifiant" />
+                                        <input type="password" class="input" name="password" placeholder="Mot de passe" />
+
+                                    <button class="submit-btn" type="submit">Se connecter</button>
+                                    </form>
                                     <a class="submit-btn text-center" href="/fhir">Test sans identifiants</a>
                                 </div>
                             </div>
