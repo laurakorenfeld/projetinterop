@@ -96,7 +96,7 @@ module.exports = {
       webdriver: {
         start_process: true,
         server_path: '',
-        host: '127.0.0.1',
+        host: '0.0.0.0',
         port: 4444,
         cli_args: [
           // very verbose geckodriver logs
@@ -175,7 +175,7 @@ module.exports = {
       webdriver: {
         start_process: true,
         server_path: '',
-        host: '127.0.0.1',
+        host: '0.0.0.0',
         port: 4445,
         cli_args: [
           // very verbose geckodriver logs
@@ -204,7 +204,7 @@ module.exports = {
       webdriver: {
         start_process: true,
         server_path: '',
-        host: '127.0.0.1',
+        host: '0.0.0.0',
         port: 4444,
         cli_args: [
           // very verbose geckodriver logs

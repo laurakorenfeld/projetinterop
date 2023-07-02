@@ -42,10 +42,3 @@ def get_patient_by_id2(patient_id):
     patient = read_json(os.path.join(app.root_path, 'data/Patients/Patient'+str(patient_id)+'.json'))
     return patient
 
-def compte_fichiers(path) :
-    files = os.listdir(path)
-    n = 0
-    for file in files:
-        if os.path.isfile(os.path.join(path, file)):
-            n += 1
-

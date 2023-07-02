@@ -1,0 +1,79 @@
+/* Réinitialisation des styles par défaut */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  /* Styles pour le header et la navigation */
+  header {
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  nav {
+    max-width: 960px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 80px;
+    padding: 0 20px;
+  }
+
+  nav a {
+    color: #666;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  nav a:hover {
+    color: #000;
+  }
+
+  /* Styles pour le contenu principal */
+  main {
+    background-color: #f6f6f6;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 80px 20px;
+    text-align: center;
+  }
+
+  h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+  }
+
+  p {
+    font-size: 24px;
+    margin-bottom: 40px;
+  }
+
+  .button {
+    display: inline-block;
+    background-color: #0077ff;
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 15px 40px;
+    border-radius: 30px;
+    transition: background-color 0.3s;
+  }
+
+  .button:hover {
+    background-color: #005ce6;
+  }
+
+  /* Styles pour le footer */
+  footer {
+    background-color: #fff;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+    color: #666;
+  }
+  

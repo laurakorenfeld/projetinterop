@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+
+	<script src="https://kit.fontawesome.com/252879800c.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="index.css">
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<body>
+  <header><br><br>
+    <h1>Plateforme de télémédecine</h1>
+    <p>Consultez un médecin en ligne, 24h/24 et 7j/7</p>
+  </header>
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item active"></li>
+        <li class="nav-item">
+          <a class="nav-link" href="/">Accueil</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/">À Propos</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <form>
+    <fieldset>
+      <label for="search">Trouver un médecin :</label>
+      <input type="text" id="search" name="search">
+    </fieldset>
+    <fieldset>
+      <legend>Sélectionner une spécialité :</legend>
+      <label for="generaliste">
+        <input type="radio" id="generaliste" name="specialite" value="generaliste">
+        Médecine générale
+      </label>
+      <label for="dermatologue">
+        <input type="radio" id="dermatologue" name="specialite" value="dermatologue">
+        Dermatologie
+      </label>
+      <label for="cardiologue">
+        <input type="radio" id="cardiologue" name="specialite" value="cardiologue">
+        Cardiologie
+      </label>
+    </fieldset>
+    <button type="submit">Rechercher</button>
+  </form>
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col">
+        <div class="card">
+          <img class="card-img-top" src="static/images/1.png" alt="Photo du docteur 1">
+          <div class="card-body">
+            <h5 class="card-title">Dr. Dupont</h5>
+            <p class="card-text">Médecine générale</p>
+            <a href="#" class="btn btn-primary">Prendre rendez-vous</a>
+          </div>
+        </div>
+      </div>
+    <div class="col">
+      <div class="card">
+        <img class="card-img-top" src="static/images/2.png" alt="Photo du docteur 2">
+        <div class="card-body">
+          <h5 class="card-title">Dr. Martin</h5>
+          <p class="card-text">Dermatologie</p>
+          <a href="#" class="btn btn-primary">Prendre rendez-vous</a>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <img class="card-img-top" src="static/images/3.png" alt="Photo du docteur 3">
+        <div class="card-body">
+          <h5 class="card-title">Dr. Dubois</h5>
+          <p class="card-text">Cardiologie</p>
+<a href="#" class="btn btn-primary">Prendre rendez-vous</a>
+</div>
+</div>
+</div>
+
+  </div>
+</div>
+</body>
+<footer>
+  <p>&copy; 2023 Plateforme de télémédecine - Tous droits réservés</p>
+</footer>
+

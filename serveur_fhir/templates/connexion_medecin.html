@@ -18,11 +18,6 @@
 
         <link href="{{ url_for('static', filename='css/index_connexion_patient.css') }}" rel="stylesheet">
 
-        <link href='https://fullcalendar.io/releases/main/base.css' rel='stylesheet' />
-        <link href='https://fullcalendar.io/releases/main/main.css' rel='stylesheet' />
-        <script src='https://fullcalendar.io/releases/main/base.js'></script>
-        <script src='https://fullcalendar.io/releases/main/main.js'></script>
-
     </head>
 
     <body id="section_1">
@@ -77,7 +72,7 @@
         <nav class="navbar navbar-expand-lg bg-light shadow-lg">
             <div class="container">
                 <a class="navbar-brand" href="/">
-                    <img src="../static/images/logo.png" class="logo img-fluid" alt="La plataforma">
+                    <img src="static/images/logo.png" class="logo img-fluid" alt="La plataforma">
                     <span>
                         La plataforma
                         <small>Plateforme de télémédecine</small>
@@ -99,7 +94,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link click-scroll" href="/connexion_medecin">Médecin</a>
+                            <a class="nav-link click-scroll" href="/fhir">Médecin</a>
                         </li>
 
                         <li class="nav-item">
@@ -110,10 +105,33 @@
             </div>
         </nav>
 
-<div id='calendar'>
-<iframe src="https://calendar.google.com/calendar/embed?src=en.french%23holiday%40group.v.calendar.google.com&ctz=Europe%2FParis" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe></div>
+        <main>
+            <section class="volunteer-section section-padding" id="section_4">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-6 col-12">
+                            <h2 class="text-white">Praticien</h2>
+                            <div class="form-structor" name="jsp">
+                            <div class="login">
+                                <div class="center">
+                                    <form class="form-holder" method="post" action="#">
+                                        <input type="text" class="input" name="username" placeholder="Identifiant" />
+                                        <input type="password" class="input" name="password" placeholder="Mot de passe" />
 
-<footer class="site-footer">
+                                    <button class="submit-btn" type="submit">Se connecter</button>
+                                    </form>
+                                    <a class="submit-btn text-center" href="/fhir">Test sans identifiants</a>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <footer class="site-footer">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-3 col-12 mb-4">
@@ -200,21 +218,42 @@
                 </div>
             </div>
         </footer>
-</body>
 
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    var calendarEl = document.getElementById('calendar');
-    var doctorId = {{practitioner_id}}; // Replace with the doctor's ID
+        <!-- JAVASCRIPT FILES -->
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/jquery.sticky.js"></script>
+        <script src="js/click-scroll.js"></script>
+        <script src="js/counter.js"></script>
+        <script src="js/custom.js"></script>
+    <script>console.clear();
 
-    var calendar = new FullCalendar.Calendar(calendarEl, {
-        events: '/get_appointments/' + doctorId
-        // ...
-    });
+const loginBtn = document.getElementById('login');
+const signupBtn = document.getElementById('signup');
 
-    calendar.render();
+loginBtn.addEventListener('click', (e) => {
+	let parent = e.target.parentNode.parentNode;
+	Array.from(e.target.parentNode.parentNode.classList).find((element) => {
+		if(element !== "slide-up") {
+			parent.classList.add('slide-up')
+		}else{
+			signupBtn.parentNode.classList.add('slide-up')
+			parent.classList.remove('slide-up')
+		}
+	});
 });
 
-</script>
+signupBtn.addEventListener('click', (e) => {
+	let parent = e.target.parentNode;
+	Array.from(e.target.parentNode.classList).find((element) => {
+		if(element !== "slide-up") {
+			parent.classList.add('slide-up')
+		}else{
+			loginBtn.parentNode.parentNode.classList.add('slide-up')
+			parent.classList.remove('slide-up')
+		}
+	});
+});</script>
 
+    </body>
 </html>

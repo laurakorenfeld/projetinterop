@@ -1,0 +1,44 @@
+/* Utilisation de variables CSS pour les couleurs */
+:root {
+    --bordeaux: #d60c59;
+    --bleu-fonce: #0f2c3e;
+    --blanc: #f8f1ec;
+  }
+
+  /* Appliquer la couleur de fond */
+  body {
+
+    background-image: url('static/images/acc_medecin.png');
+    color: var(--blanc);
+    font-family: sans-serif;
+    font-size: 16px;
+  }
+
+
+  /* Style du pied de page */
+  .footer {
+    background-color: var(--bleu-fonce);
+    color: var(--blanc);
+    font-size: 0.8rem;
+    padding: 2rem 0;
+    padding-top: 50px;
+  }
+
+  .container-footer{
+    background-color: var(--bleu-fonce);
+    padding-top: 20px;
+  }
+
+  .display-4 {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 40pt;
+    color: var(--bleu-fonce);
+    float: left;
+    font-weight: bold;
+  }
+
+  /* Style des messages d'erreur */
+  .error {
+    color: red;
+    font-weight: bold;
+  }

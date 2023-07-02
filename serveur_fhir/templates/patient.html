@@ -18,11 +18,6 @@
 
         <link href="{{ url_for('static', filename='css/index_connexion_patient.css') }}" rel="stylesheet">
 
-        <link href='https://fullcalendar.io/releases/main/base.css' rel='stylesheet' />
-        <link href='https://fullcalendar.io/releases/main/main.css' rel='stylesheet' />
-        <script src='https://fullcalendar.io/releases/main/base.js'></script>
-        <script src='https://fullcalendar.io/releases/main/main.js'></script>
-
     </head>
 
     <body id="section_1">
@@ -77,7 +72,7 @@
         <nav class="navbar navbar-expand-lg bg-light shadow-lg">
             <div class="container">
                 <a class="navbar-brand" href="/">
-                    <img src="../static/images/logo.png" class="logo img-fluid" alt="La plataforma">
+                    <img src="static/images/logo.png" class="logo img-fluid" alt="La plataforma">
                     <span>
                         La plataforma
                         <small>Plateforme de télémédecine</small>
@@ -99,7 +94,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link click-scroll" href="/connexion_medecin">Médecin</a>
+                            <a class="nav-link click-scroll" href="/fhir">Médecin</a>
                         </li>
 
                         <li class="nav-item">
@@ -109,15 +104,80 @@
                 </div>
             </div>
         </nav>
+{% extends 'layout/base.html' %}
 
-<div id='calendar'>
-<iframe src="https://calendar.google.com/calendar/embed?src=en.french%23holiday%40group.v.calendar.google.com&ctz=Europe%2FParis" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe></div>
+{% block title %} Liste des patients {% endblock %}
 
-<footer class="site-footer">
+{% block content %}
+<h1 class="subject mt-5 mb-5">Liste des patients</h1>
+
+{% if patients %}
+
+
+<div class="row justify-content-center">
+  <div class="col-md-10 col-xs-12 mb-5">
+    <table class="table table-hover table-bordered">
+      <tr class="bg-light">
+        <th class="text-center">Id du patient</th>
+        <th class="text-center">Nom et Prénom</th>
+        <th class="text-center">Date de naissance</th>
+        <!-- <th class="text-center">Date et heure d'arrivée</th> -->
+        <!-- <th class="text-center">Ordre de gravite</th> -->
+        <!-- <th class="text-center">Date et heure de départ</th> -->
+        <!-- <th class="text-center">Service</th> -->
+        <!-- <th class="text-center">Statut</th> -->
+      </tr>
+      {% for p in patients %}
+      <tr>
+        <td class="text-center">
+          <a class="mt-2 text-decoration-none text-dark" href="{{ url_for('patient_detail', patient_id=p.identifier) }}">{{ p.identifier }}</a></td>
+        </td>
+        <td class="text-center">
+        <a class="mt-2 text-decoration-none text-dark" href="{{ url_for('patient_detail', patient_id=p.identifier) }}">{{ p.name }}</a></td>
+        <td class="text-center" class="my-date">
+          <a class="mt-2 text-decoration-none text-dark" href="{{ url_for('patient_detail', patient_id=p.identifier) }}">{{ p.birthDate }}</a></td>
+        </td>
+        <!-- <td class="text-center" class="my-date">{{ p.date_et_heure_arrivee_patient }}</td>
+        <td class="text-center">{{ p.ordre_de_gravite_patient }}</td>
+        <td class="text-center">{{ p.date_et_heure_depart_patient }}</td> -->
+        <!-- {% if p.service_id == 1 %}
+        <td class="text-center">Urgences</td>
+        {% endif %}
+        {% if p.status_id == 1 %}
+        <td class="text-center">En attente</td>
+        {% endif %}
+        {% if p.status_id == 2 %}
+        <td class="text-center">Admis</td>
+        {% endif %}
+        {% if p.status_id == 3 %}
+        <td class="text-center">Sortis</td>
+        {% endif %} -->
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+
+{% else %}
+<p class="text-center"><i>Aucun résultats retourné!!!</i></p>
+{% endif %}
+
+  <script>
+   window.onload = function() {
+     let d = document.getElementsByClassName('my-date')
+     for (let i = 0; i < d.length; i++)
+         d[i].innerText = moment(d[i].innerText).locale('fr').fromNow()
+   }
+
+</script>
+
+{% endblock %}
+
+
+            <footer class="site-footer">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-3 col-12 mb-4">
-                        <img src="static/images/logo.png" class="logo img-fluid" alt="">
+                        <img src="static/images/logo.png" class="logo img-fluid" alt="La plataforma">
                     </div>
 
                     <div class="col-lg-4 col-md-6 col-12 mb-4">
@@ -200,21 +260,42 @@
                 </div>
             </div>
         </footer>
-</body>
 
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    var calendarEl = document.getElementById('calendar');
-    var doctorId = {{practitioner_id}}; // Replace with the doctor's ID
+        <!-- JAVASCRIPT FILES -->
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/jquery.sticky.js"></script>
+        <script src="js/click-scroll.js"></script>
+        <script src="js/counter.js"></script>
+        <script src="js/custom.js"></script>
+    <script>console.clear();
 
-    var calendar = new FullCalendar.Calendar(calendarEl, {
-        events: '/get_appointments/' + doctorId
-        // ...
-    });
+const loginBtn = document.getElementById('login');
+const signupBtn = document.getElementById('signup');
 
-    calendar.render();
+loginBtn.addEventListener('click', (e) => {
+	let parent = e.target.parentNode.parentNode;
+	Array.from(e.target.parentNode.parentNode.classList).find((element) => {
+		if(element !== "slide-up") {
+			parent.classList.add('slide-up')
+		}else{
+			signupBtn.parentNode.classList.add('slide-up')
+			parent.classList.remove('slide-up')
+		}
+	});
 });
 
-</script>
+signupBtn.addEventListener('click', (e) => {
+	let parent = e.target.parentNode;
+	Array.from(e.target.parentNode.classList).find((element) => {
+		if(element !== "slide-up") {
+			parent.classList.add('slide-up')
+		}else{
+			loginBtn.parentNode.parentNode.classList.add('slide-up')
+			parent.classList.remove('slide-up')
+		}
+	});
+});</script>
 
+</div></body>
 </html>
