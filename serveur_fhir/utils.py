@@ -34,3 +34,27 @@ def get_patient_by_id2(patient_id):
     patient = read_json(os.path.join(serveur_fhir.root_path, 'data/Patients/Patient'+str(patient_id)+'.json'))
     return patient
 
+def update_patient(patient_id, updated_patient):
+    file_path = os.path.join(serveur_fhir.root_path, 'data/Patients/Patient' + str(patient_id) + '.json')
+    if os.path.exists(file_path):
+        with open(file_path, 'r+') as f:
+            patient_data = json.load(f)
+            # Effectuer les mises à jour des champs du patient avec les valeurs de updated_patient
+            patient_data['name'][0]['given'][0] = updated_patient['nom']
+            patient_data['name'][0]['family'] = updated_patient['prenom']
+            patient_data['gender'] = updated_patient['genre']
+            # Mettre à jour d'autres champs du patient
+
+            # Retourner au début du fichier pour réécrire les données mises à jour
+            f.seek(0)
+            json.dump(patient_data, f, indent=4)
+            f.truncate()
+    else:
+        raise FileNotFoundError("Patient not found.")
+
+def delete_patient(patient_id):
+    file_path = os.path.join(serveur_fhir.root_path, 'data/Patients/Patient' + str(patient_id) + '.json')
+    if os.path.exists(file_path):
+        os.remove(file_path)
+    else:
+        raise FileNotFoundError("Patient not found.")

@@ -133,6 +133,23 @@ def page_ajout_patient():
             json.dump(new_patient, f)
         return redirect(url_for('patient_list'))
 
+@serveur_fhir.route('/fhir/edit_patient/<int:patient_id>', methods=['GET', 'POST'])
+def edit_patient(patient_id):
+    patient = utils.get_patient_by_id2(patient_id)
+    if request.method == 'GET':
+        return redirect(url_for('patient_detail', patient_id=patient_id))
+    elif request.method == 'POST':
+        # Code pour mettre à jour les informations du patient
+        return redirect(url_for('patient_detail', patient_id=patient_id))
+
+@serveur_fhir.route('/fhir/patient_detail/<int:patient_id>/delete', methods=['POST'])
+def delete_patient(patient_id):
+    utils.delete_patient(patient_id)
+    flash("Le patient a été supprimé avec succès.")
+    return redirect(url_for('patient_list'))
+
+
+
 @serveur_fhir.route('/fhir/rech_patient', methods=['GET', 'POST'])
 def rech_patients():
     #return(redirect("http://0.0.0.0:8000/fhir/rech_patient"))

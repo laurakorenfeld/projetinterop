@@ -149,6 +149,31 @@
         <td class="text-center">{{ patient.gender }}</td>
       </tr>
     </table>
+<a class="btn btn-primary" href="{{ url_for('delete_patient', patient_id=patient['identifier'][0]['value']) }}">Modifier</a>
+    <button type="submit" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce patient ?')">Supprimer</button>
+</form>
+<form action="{{ url_for('edit_patient', patient_id=patient['identifier'][0]['value']) }}" method="POST">
+    <div class="form-group">
+        <label for="nom">Nom</label>
+        <input type="text" class="form-control" id="nom" name="nom" value="{{ patient['name'][0]['family'] }}" required>
+    </div>
+    <div class="form-group">
+        <label for="prenom">Prénom</label>
+        <input type="text" class="form-control" id="prenom" name="prenom" value="{{ patient['name'][0]['given'][0] }}" required>
+    </div>
+    <div class="form-group">
+        <label for="genre">Genre</label>
+        <select class="form-control" id="genre" name="genre" required>
+            <option value="male" {% if patient.gender =='male' %} selected{% endif %}>Homme</option>
+            <option value="female" {% if patient.gender =='female' %} selected {% endif %}>Femme</option>
+            <option value="other" {% if patient.gender =='other' %} selected {% endif %}>Autre</option>
+        </select>
+    </div>
+    <!-- Ajoutez ici d'autres champs à modifier -->
+    <button type="submit" class="btn btn-primary">Enregistrer</button>
+</form>
+
+
   </div>
   <div class="row justify-content-center mb-5">
     <a class="btn btn-primary mt-2" href="/fhir/Patient" role="button">Retourner à la page de la liste des patients</a>
@@ -261,7 +286,7 @@
 
                     </div>
                 </div>
-            </div>
+            </div></div>
         </footer>
 
         <!-- JAVASCRIPT FILES -->

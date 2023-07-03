@@ -20,7 +20,7 @@ import bcrypt
 from serveur_fhir import utils
 
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///TheBDD.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///TheBDD1.db'
 app.config["SECRET_KEY"] = "abc"
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
@@ -104,7 +104,7 @@ def apropos():
 
 @app.route('/search_practitioners', methods=['POST', 'GET'])
 def search_practitioners():
-    conn = sqlite3.connect('theBDD.db')
+    conn = sqlite3.connect('/Users/LKorenfeld/Documents/Travail/ITS/projetinterop/TheBDD.db')
     c = conn.cursor()
     if request.method == 'GET':
         c.execute("SELECT * FROM doctors")
@@ -128,8 +128,27 @@ def search_practitioners():
     results = c.fetchall()
     conn.close()
     return render_template('resultat_rech_medecin.html', practitioners=results)
+@app.route('/infos_medecin/<int:practitioner_id>')
+def infos_medecin(practitioner_id):
 
+    conn = sqlite3.connect('/Users/LKorenfeld/Documents/Travail/ITS/projetinterop/TheBDD.db')
+    c = conn.cursor()
+    cur = c.execute('SELECT * FROM appointments WHERE doctor_id = ?', (practitioner_id,))
+    appointments = cur.fetchall()
 
+    # Organize the appointments by day and hour for easy display
+    appointment_schedule = {"Lundi": [], "Mardi": [], "Mercredi": [], "Jeudi": [], "Vendredi": []}
+    days_in_french = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]
+    for appointment in appointments:
+        date_str = str(appointment[3])
+        print(date_str)
+        day = datetime.strptime(date_str, '%Y-%m-%d %H:%M:%S').strftime('%d')
+        if day in appointment_schedule:
+            appointment_schedule[day].append((appointment[1], appointment[2], date_str))
+
+    conn.close()
+    # Pass the appointments to the template
+    return render_template('infos_medecin.html', appointments=appointment_schedule)
 @app.route("/connexion_medecin", methods=['GET', 'POST'])
 def connexion_medecin():
     if request.method == 'POST':

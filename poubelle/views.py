@@ -20,7 +20,7 @@ import bcrypt
 from serveur_fhir import utils
 
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///TheBDD.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///TheBDD1.db'
 app.config["SECRET_KEY"] = "abc"
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
