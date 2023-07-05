@@ -97,7 +97,7 @@ def accueil():
     return render_template('index_vrai.html')
 
 
-@app.route("/apropos")
+@app.route("/apropos", methods=['GET', 'POST'])
 def apropos():
     return render_template('apropos.html')
 

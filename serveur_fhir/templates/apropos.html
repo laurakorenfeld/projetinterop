@@ -150,7 +150,7 @@
                         </div>
 
                         <div class="col-lg-5 col-12 mx-auto">
-                            <form class="custom-form contact-form" action="#" method="post" role="form">
+                            <form id="contact-form" class="custom-form contact-form" action="#" method="post" role="form">
                                 <h2>Formulaire</h2>
 
                                 <p class="mb-4"> Vous souhaiter nous contacter ? Remplissez ce formulaire ou envoyez simplement un mail à l'adresse suivante :
@@ -181,6 +181,30 @@
                 </div>
             </section>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-beta1/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.emailjs.com/sdk/2.3.2/email.min.js"></script>
+<script>
+    // Initialise EmailJS
+    emailjs.init('jkXoxW7JeD1f0sPrBROVS'); // Remplacez 'your-user-id' par votre ID utilisateur EmailJS
+
+    // Configure l'envoi du formulaire
+    window.onload = function() {
+        document.getElementById('contact-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // utilisez 'votre-service' et 'votre-modèle' que vous avez définis dans votre tableau de bord EmailJS
+            emailjs.sendForm('service_t91cuy7', 'template_9fto67q', this)
+.then(function() {
+    console.log('Email successfully sent!');
+    alert("Email successfully sent!");
+})
+.catch(function(error) {
+    console.error('Error occurred:', error);
+    alert("Error occurred: " + error);
+});
+
+        });
+    }
+</script>
 
     </body>
 </html>

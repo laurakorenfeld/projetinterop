@@ -1,10 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Prise de rendez-vous</title>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	 <title>Page médecin</title>
+
+	<meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>La plataforma</title>
+
+        <!-- CSS FILES -->
+        <link href="{{ url_for('static', filename='css//bootstrap.min.css') }}" rel="stylesheet">
+
+        <link href="{{ url_for('static', filename='css/bootstrap-icons.css') }}" rel="stylesheet">
+
+        <link href="{{ url_for('static', filename='css/templatemo-kind-heart-charity.css') }}" rel="stylesheet">
+
+        <link href="{{ url_for('static', filename='css/index_connexion_patient.css') }}" rel="stylesheet">
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
 	  <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,7 +27,6 @@
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
 
-	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.css' rel='stylesheet' />
 	<link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.print.min.css' rel='stylesheet' media='print' />
@@ -32,7 +45,94 @@
 		}
 	</style>
 </head>
-<body>
+<body id="section_1">
+
+        <header class="site-header">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-lg-8 col-12 d-flex flex-wrap">
+                        <p class="d-flex me-4 mb-0">
+                            <i class="bi-geo-alt me-2"></i>
+                            <a href="https://goo.gl/maps/MJiExZEs2Ph6aK8A6" target="_blank">
+                                122 rue Paul Armangot, 94400 Vitry-sur-Seine
+                            </a>
+                        </p>
+
+                        <p class="d-flex mb-0">
+                            <i class="bi-envelope me-2"></i>
+
+                            <a href="mailto:laura.korenfeld@gmail.com">
+                                laura.korenfeld@gmail.com
+                            </a>
+                        </p>
+                    </div>
+
+                    <div class="col-lg-3 col-12 ms-auto d-lg-block d-none">
+                        <ul class="social-icon">
+                            <li class="social-icon-item">
+                                <a href="#" class="social-icon-link bi-twitter"></a>
+                            </li>
+
+                            <li class="social-icon-item">
+                                <a href="#" class="social-icon-link bi-facebook"></a>
+                            </li>
+
+                            <li class="social-icon-item">
+                                <a href="#" class="social-icon-link bi-instagram"></a>
+                            </li>
+
+                            <li class="social-icon-item">
+                                <a href="#" class="social-icon-link bi-youtube"></a>
+                            </li>
+
+                            <li class="social-icon-item">
+                                <a href="#" class="social-icon-link bi-whatsapp"></a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </header>
+		<nav class="navbar navbar-expand-lg bg-light shadow-lg">
+            <div class="container">
+                <a class="navbar-brand" href="/">
+                    <img src="/Users/LKorenfeld/Documents/Travail/ITS/projetinterop/app/static/images/logo.png" class="logo img-fluid" alt="La plataforma">
+                    <span>
+                        La plataforma
+                        <small>Plateforme de télémédecine</small>
+                    </span>
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link click-scroll" href="/">Menu</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link click-scroll" href="#section_4">Patient</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link click-scroll" href="/connexion_medecin">Médecin</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link click-scroll" href="/apropos">A propos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link click-scroll" href="/monchat">Test chat et vidéo</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
 	<header>
 		<h1>Prise de rendez-vous en ligne</h1>
 	</header>
@@ -76,9 +176,133 @@
 		</div>
 	</main>
 
-	<footer>
-		<p>La plataforma</p>
-	</footer>
+	        <footer class="site-footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-12 mb-4">
+                        <img src="static/images/logo.png" class="logo img-fluid" alt="">
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-12 mb-4">
+                        <h5 class="site-footer-title mb-3">Liens</h5>
+
+                        <ul class="footer-menu">
+                            <li class="footer-menu-item"><a href="#" class="footer-menu-link">Notre histoire</a></li>
+
+                            <li class="footer-menu-item"><a href="#" class="footer-menu-link">Newsroom</a></li>
+
+                            <li class="footer-menu-item"><a href="#" class="footer-menu-link">Causes</a></li>
+
+                        </ul>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-12 mx-auto">
+                        <h5 class="site-footer-title mb-3">Contact</h5>
+
+                        <p class="text-white d-flex mb-2">
+                            <i class="bi-telephone me-2"></i>
+
+                            <a href="tel: 120-240-9600" class="site-footer-link">
+                                120-240-9600
+                            </a>
+                        </p>
+
+                        <p class="text-white d-flex">
+                            <i class="bi-envelope me-2"></i>
+
+                            <a href="mailto:info@yourgmail.com" class="site-footer-link">
+                                donate@charity.org
+                            </a>
+                        </p>
+
+                        <p class="text-white d-flex mt-3">
+                            <i class="bi-geo-alt me-2"></i>
+                            122 rue Paul Armangot, 94400 Vitry-sur-Seine
+                        </p>
+
+                        <a href="#" class="custom-btn btn mt-3">Get Direction</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="site-footer-bottom">
+                <div class="container">
+                    <div class="row">
+
+                        <div class="col-lg-6 col-md-7 col-12">
+                            <p class="copyright-text mb-0">Copyright © 2023 <a href="#">La plataforma - </a> Laura Korenfeld
+
+                        	EPISEN ITS2 FISA</p><br>
+                        </div>
+
+                        <div class="col-lg-6 col-md-5 col-12 d-flex justify-content-center align-items-center mx-auto">
+                            <ul class="social-icon">
+                                <li class="social-icon-item">
+                                    <a href="#" class="social-icon-link bi-twitter"></a>
+                                </li>
+
+                                <li class="social-icon-item">
+                                    <a href="#" class="social-icon-link bi-facebook"></a>
+                                </li>
+
+                                <li class="social-icon-item">
+                                    <a href="#" class="social-icon-link bi-instagram"></a>
+                                </li>
+
+                                <li class="social-icon-item">
+                                    <a href="#" class="social-icon-link bi-linkedin"></a>
+                                </li>
+
+                                <li class="social-icon-item">
+                                    <a href="https://youtube.com/templatemo" class="social-icon-link bi-youtube"></a>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <!-- JAVASCRIPT FILES -->
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/jquery.sticky.js"></script>
+        <script src="js/click-scroll.js"></script>
+        <script src="js/counter.js"></script>
+        <script src="js/custom.js"></script>
+    <script>console.clear();
+
+const loginBtn = document.getElementById('login');
+const signupBtn = document.getElementById('signup');
+
+loginBtn.addEventListener('click', (e) => {
+	let parent = e.target.parentNode.parentNode;
+	Array.from(e.target.parentNode.parentNode.classList).find((element) => {
+		if(element !== "slide-up") {
+			parent.classList.add('slide-up')
+		}else{
+			signupBtn.parentNode.classList.add('slide-up')
+			parent.classList.remove('slide-up')
+		}
+	});
+});
+
+signupBtn.addEventListener('click', (e) => {
+	let parent = e.target.parentNode;
+	Array.from(e.target.parentNode.classList).find((element) => {
+		if(element !== "slide-up") {
+			parent.classList.add('slide-up')
+		}else{
+			loginBtn.parentNode.parentNode.classList.add('slide-up')
+			parent.classList.remove('slide-up')
+		}
+	});
+});</script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+    </body>
+</html>
 
 <script>
 		$(document).ready(function() {

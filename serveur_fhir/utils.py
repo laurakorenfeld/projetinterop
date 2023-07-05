@@ -10,7 +10,7 @@ def load_patient():
     folder_path = os.path.join(os.getcwd(), 'Documents/Travail/ITS/projetinterop/serveur_fhir/data/Patients')
     for filename in os.listdir(folder_path):
         file_path = os.path.join(folder_path, filename)
-        patient_id = len(patients) +1
+        patient_id = int(filename.replace("Patient", "").replace(".json", ""))  # extract patient id from filename
         with open(file_path, 'r') as f:
             patient_data = json.load(f)
 
@@ -20,7 +20,8 @@ def load_patient():
                 'birthDate': patient_data['birthDate']
             }
             patients.append(patient)
-    return patients
+    return sorted(patients, key=lambda k: k['identifier'])  # ensure patients are sorted by identifier
+
 
 def get_patient_by_id(patient_id):
     patients = read_json(os.path.join(serveur_fhir.root_path, 'data/Patients/Patient' + str(patient_id) + '.json'))
@@ -34,18 +35,21 @@ def get_patient_by_id2(patient_id):
     patient = read_json(os.path.join(serveur_fhir.root_path, 'data/Patients/Patient'+str(patient_id)+'.json'))
     return patient
 
+def get_next_patient_id():
+    folder_path = os.path.join(os.getcwd(), 'Documents/Travail/ITS/projetinterop/serveur_fhir/data/Patients')
+    files = os.listdir(folder_path)
+    json_files = [file for file in files if file.endswith('.json')]
+    new_id = len(json_files) + 1
+    return new_id
 def update_patient(patient_id, updated_patient):
     file_path = os.path.join(serveur_fhir.root_path, 'data/Patients/Patient' + str(patient_id) + '.json')
     if os.path.exists(file_path):
         with open(file_path, 'r+') as f:
             patient_data = json.load(f)
             # Effectuer les mises à jour des champs du patient avec les valeurs de updated_patient
-            patient_data['name'][0]['given'][0] = updated_patient['nom']
-            patient_data['name'][0]['family'] = updated_patient['prenom']
+            patient_data['name'][0]['given'][0] = updated_patient['prenom']
+            patient_data['name'][0]['family'] = updated_patient['nom']
             patient_data['gender'] = updated_patient['genre']
-            # Mettre à jour d'autres champs du patient
-
-            # Retourner au début du fichier pour réécrire les données mises à jour
             f.seek(0)
             json.dump(patient_data, f, indent=4)
             f.truncate()

@@ -86,7 +86,7 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
-                            <a class="nav-link click-scroll" href="https://localhost:8080">Menu</a>
+                            <a class="nav-link click-scroll" href="/">Menu</a>
                         </li>
 
                         <li class="nav-item">
@@ -149,22 +149,45 @@
         <td class="text-center">{{ patient.gender }}</td>
       </tr>
     </table>
-<a class="custom-btn btn smoothscroll" href="{{ url_for('edit_patient', patient_id=patient['identifier'][0]['value']) }}">Modifier</a>
- <!--a class="btn btn-danger" href="{{ url_for('remove_patient', patient_id=patient['identifier'][0]['value']) }}">Supprimer</a-->
-<a href="{{ url_for('remove_patient', patient_id=patient['identifier'][0]['value']) }}"
-   onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce patient ?')"
-   class="btn btn-danger" role="button">Supprimer</a>
+<a class="btn btn-primary" href="{{ url_for('edit_patient', patient_id=patient['identifier'][0]['value']) }}">Modifier</a>
+      <a class="btn btn-danger" href="{{ url_for('remove_patient', patient_id=patient['identifier'][0]['value']) }}">Supprimer</a>
+    <!--button type="submit" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce patient ?')" href="{{ url_for('remove_patient', patient_id=patient['identifier'][0]['value']) }}">Supprimer</button-->
+
+<form action="{{ url_for('edit_patient', patient_id=patient['identifier'][0]['value']) }}" method="POST">
+    <div class="form-group">
+        <label for="nom">Nom</label>
+        <input type="text" class="form-control" id="nom" name="nom" value="{{ patient['name'][0]['family'] }}" required>
+    </div>
+    <div class="form-group">
+        <label for="prenom">Prénom</label>
+        <input type="text" class="form-control" id="prenom" name="prenom" value="{{ patient['name'][0]['given'][0] }}" required>
+    </div>
+    <div class="form-group">
+        <label for="genre">Genre</label>
+        <select class="form-control" id="genre" name="genre" required>
+            <option value="male" {% if patient.gender =='male' %} selected{% endif %}>Homme</option>
+            <option value="female" {% if patient.gender =='female' %} selected {% endif %}>Femme</option>
+            <option value="other" {% if patient.gender =='other' %} selected {% endif %}>Autre</option>
+        </select>
+    </div>
+    <button type="submit" class="custom-btn btn smoothscroll">Enregistrer</button>
+</form>
+
+
   </div>
   <div class="row justify-content-center mb-5">
     <a class="custom-btn btn smoothscroll" href="/fhir/Patient" role="button">Retourner à la page de la liste des patients</a>
   </div>
-    <div class="row">
+     </div>
+        <div class="row">
 <div class="col-md-6 d-flex justify-content-center">
-  <a class="custom-btn btn smoothscroll" data-toggle="modal" data-target="#joinRoomModal">Rejoindre une salle</a><br>
-    <a href="http://0.0.0.0:3000/mon-chat-video" class="custom-btn btn smoothscroll">Créer une salle pour téléconsulter</a>
+  <!-- Add "data-toggle" and "data-target" attributes to trigger the modal with id "joinRoomModal" -->
+  <a class="custom-btn btn smoothscroll" data-toggle="modal" data-target="#joinRoomModal">Rejoindre une salle</a>
+</div>
           </div>
-    </div></div><br><br>
-
+          <div class="col-md-6 d-flex justify-content-center">
+			  <a href="http://0.0.0.0:3000/mon-chat-video" class="custom-btn btn smoothscroll">Créer une salle pour téléconsulter</a>
+          </div>
 {% else %}
 <p class="text-center"><i>Aucun résultats retourné!!!</i></p>
 {% endif %}
